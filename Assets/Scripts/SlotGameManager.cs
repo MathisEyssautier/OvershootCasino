@@ -21,12 +21,21 @@ public class SlotGameManager : MonoBehaviour
     public Button spinButton;
     public Button industryButton;
     public Button ecologyButton;
+    public int ecologyCost;
+    public int industryCost;
+    public int ecoGain;
+
+    //Button
+    [SerializeField] TMPro.TextMeshProUGUI industryButtonText;
+    [SerializeField] TMPro.TextMeshProUGUI ecologyButtonText;
+    [SerializeField] TMPro.TextMeshProUGUI MultText;
 
     [Header("Valeurs de base")]
-    public int startingMoney = 1000; //La thune de base
-    public int startingEcology = 365; //La valeur de base de notre éco
-    public int spinCost = 20; //le coût en jours de notre lancement
-    public float spinTime = 0.3f; //le temps entre nos roues qui tournent
+    public int startingMoney; //La thune de base
+    public int startingEcology; //La valeur de base de notre éco
+    public int spinCost; //le coût en jours de notre lancement
+    public float spinTime; //le temps entre nos roues qui tournent
+    public int gainMult;
 
     [Header("Valeurs de gain / perte")]
     public int gainLow = 25;     // symboles 1, 2, 3
@@ -47,6 +56,7 @@ public class SlotGameManager : MonoBehaviour
 
         spinButton.onClick.AddListener(StartSpin); //On assimile nos fonctions aux boutons
         ecologyButton.onClick.AddListener(BuyEcology);
+        industryButton.onClick.AddListener(BuyIndustry);
     }
 
     void StartSpin() //La fonction qui envoie les roues
@@ -117,25 +127,37 @@ public class SlotGameManager : MonoBehaviour
             else if (symbol <= 5) gain = gainMedium;
             else gain = gainHigh;
 
-            currentMoney += gain * multiplier; //On incrémente notre thune
+            currentMoney += gain * multiplier * gainMult; //On incrémente notre thune
             Debug.Log("Gain de " + (gain * multiplier) + "$");
         }
         else if (symbol == 7 || symbol == 8) //Dans le cas où notre symbole en double ou en triple c'est les symboles d'écologie
         {
-            currentEcology -= ecoLoss * multiplier;
+            currentEcology -= ecoLoss * multiplier * gainMult;
             Debug.Log("Perte de " + (ecoLoss * multiplier) + "d'éco !");
         }
     }
 
-    void BuyEcology()
+    public void BuyEcology()
     {
-        int costMoney = 50;
-        int ecoGain = 30;
-
-        if (currentMoney >= costMoney)
+        
+        if (currentMoney >= ecologyCost)
         {
-            currentMoney -= costMoney;
+            currentMoney -= ecologyCost;
             currentEcology += ecoGain;
+            currentEcology = Mathf.Min(currentEcology, startingEcology);
+
+            ecologyCost += ecologyCost/2;
+        }
+        UpdateUI();
+    }
+
+    public void BuyIndustry()
+    {
+        if(currentMoney >= industryCost)
+        {
+            currentMoney -= industryCost;
+            gainMult++;
+            industryCost += industryCost/2;
         }
         UpdateUI();
     }
@@ -147,6 +169,9 @@ public class SlotGameManager : MonoBehaviour
         moneyText.text = currentMoney.ToString();
         ecoText.text = currentEcology.ToString();
         spinCostText.text = "Coût : " + spinCost + "jours";
+        industryButtonText.text = industryCost + " $"+ " for + " + gainMult + " Mult";
+        ecologyButtonText.text = ecologyCost + " $" + " for + " + ecoGain + " Eco";
+        MultText.text = "Mult : " + gainMult;
     }
 }
 
