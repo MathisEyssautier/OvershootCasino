@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class AnimationTest : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
+    [SerializeField] private Animator machineAnimator;
+    [SerializeField] private Animator leverAnimator;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -13,14 +14,11 @@ public class AnimationTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.E))
         {
-            animator.Play("lever_pull");
+            leverAnimator.Play("lever_pull");
+            machineAnimator.Play("machine_shake");
         }
-
-        if (Input.GetKey(KeyCode.B))
-        {
-            animator.speed = 0.6f;
-        }
+        
     }
 }
