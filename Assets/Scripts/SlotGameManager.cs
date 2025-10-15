@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SlotGameManager : MonoBehaviour
@@ -48,8 +49,14 @@ public class SlotGameManager : MonoBehaviour
     private int currentEcology;
     private bool isSpinning = false;
 
+    [Header("End")]
+    [SerializeField] GameObject endScreen;
+    [SerializeField] Button restartButton;
+
+
     void Start()
     {
+        endScreen.SetActive(false); //On cache l'écran de fin au début
         currentMoney = startingMoney; //On réinitialise tout à chaque session
         currentEcology = startingEcology;
         UpdateUI(); //L'UI aussi
@@ -57,6 +64,7 @@ public class SlotGameManager : MonoBehaviour
         spinButton.onClick.AddListener(StartSpin); //On assimile nos fonctions aux boutons
         ecologyButton.onClick.AddListener(BuyEcology);
         industryButton.onClick.AddListener(BuyIndustry);
+        restartButton.onClick.AddListener(RestartGame);
     }
 
     void StartSpin() //La fonction qui envoie les roues
@@ -133,11 +141,12 @@ public class SlotGameManager : MonoBehaviour
         else if (symbol == 7 || symbol == 8) //Dans le cas où notre symbole en double ou en triple c'est les symboles d'écologie
         {
             currentEcology -= ecoLoss * multiplier * gainMult;
+            currentEcology = Mathf.Max(0, currentEcology); 
             Debug.Log("Perte de " + (ecoLoss * multiplier) + "d'éco !");
         }
     }
 
-    public void BuyEcology()
+     void BuyEcology()
     {
         
         if (currentMoney >= ecologyCost)
@@ -151,7 +160,7 @@ public class SlotGameManager : MonoBehaviour
         UpdateUI();
     }
 
-    public void BuyIndustry()
+     void BuyIndustry()
     {
         if(currentMoney >= industryCost)
         {
@@ -168,10 +177,28 @@ public class SlotGameManager : MonoBehaviour
         ecologyBar.value = currentEcology;
         moneyText.text = currentMoney.ToString();
         ecoText.text = currentEcology.ToString();
-        spinCostText.text = "Coût : " + spinCost + "jours";
-        industryButtonText.text = industryCost + " $"+ " for + " + gainMult + " Mult";
+        spinCostText.text = "Coût : " + spinCost + " Eco ";
+        industryButtonText.text = industryCost + " $" + " for + " +  "1 Mult";
         ecologyButtonText.text = ecologyCost + " $" + " for + " + ecoGain + " Eco";
         MultText.text = "Mult : " + gainMult;
+
+        if (currentEcology <= 0)
+        {
+            spinButton.interactable = false;
+            endScreen.SetActive(true);
+        }
+        else
+        {
+            spinButton.interactable = true;
+        }
+
+    }
+
+    void RestartGame()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+
     }
 }
 
