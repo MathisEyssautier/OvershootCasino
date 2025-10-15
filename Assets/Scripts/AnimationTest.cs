@@ -19,6 +19,9 @@ public class AnimationTest : MonoBehaviour
             leverAnimator.Play("lever_pull");
             machineAnimator.Play("machine_shake");
         }
-        
+
+        if (Input.GetKey(KeyCode.Q)) {
+            machineAnimator.Play("light_flicker");
+        }
     }
 }
