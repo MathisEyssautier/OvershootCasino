@@ -10,7 +10,7 @@ public class SlotWheel : MonoBehaviour
     private bool isSpinning = false;
     private int finalSymbol; // Le symbole final (entre 1 et 8)
     private int symbolCount = 8; // Nombre total de symboles
-    private float finalRotation; // La rotation finale en degrés
+    private float finalRotation; // La rotation finale en degrï¿½s
 
     public bool IsSpinning()
     {
@@ -34,10 +34,10 @@ public class SlotWheel : MonoBehaviour
     {
         isSpinning = true;
 
-        // On récupère la rotation de départ
-        float startRotation = cylinderTransform.localEulerAngles.x;
+        // On rï¿½cupï¿½re la rotation de dï¿½part
+        float startRotation = cylinderTransform.localEulerAngles.z;
 
-        // Calcul des degrés par symbole (360° divisé par 8 symboles = 45°)
+        // Calcul des degrï¿½s par symbole (360ï¿½ divisï¿½ par 8 symboles = 45ï¿½)
         float degreesPerSymbol = 360f / symbolCount;
 
         int randomSymbol = Random.Range(1, symbolCount + 1);
@@ -47,38 +47,38 @@ public class SlotWheel : MonoBehaviour
 
         float timeElapsed = 0f;
 
-        // Boucle d'animation qui tourne pendant toute la durée définie
+        // Boucle d'animation qui tourne pendant toute la durï¿½e dï¿½finie
         while (timeElapsed < spinDuration)
         {
             // On avance le temps
             timeElapsed += Time.deltaTime;
 
-            // Calcul du pourcentage de progression (0 à 1) pour la ligne suivante
+            // Calcul du pourcentage de progression (0 ï¿½ 1) pour la ligne suivante
             float progress = timeElapsed / spinDuration;
 
-            // Cette formule fait ralentir la roue à la fin
+            // Cette formule fait ralentir la roue ï¿½ la fin
             float easedProgress = 1f - Mathf.Pow(1f - progress, 3f);
 
-            // Interpolation entre la rotation de départ et la rotation finale --> de combien on doit tourner la roue
+            // Interpolation entre la rotation de dï¿½part et la rotation finale --> de combien on doit tourner la roue
             float currentRotation = Mathf.Lerp(startRotation, targetRotation, easedProgress);
 
-            // Application de la rotation au cylindre ( là on fait vraiment rtourner la roue )
-            cylinderTransform.localEulerAngles = new Vector3(currentRotation, 0f, 90f);
+            // Application de la rotation au cylindre ( lï¿½ on fait vraiment rtourner la roue )
+            cylinderTransform.localEulerAngles = new Vector3(0f, 0f, currentRotation);
 
             // On attend la prochaine frame
             yield return null;
         }
 
-        // À la fin, on s'assure que la rotation finale est exacte
-        cylinderTransform.localEulerAngles = new Vector3(targetRotation, 0f, 90f);
+        // ï¿½ la fin, on s'assure que la rotation finale est exacte
+        cylinderTransform.localEulerAngles = new Vector3(0f, 0f, targetRotation);
 
         // On stocke la rotation finale
         finalRotation = targetRotation;
 
-        // On calcule le symbole basé sur la rotation finale
+        // On calcule le symbole basï¿½ sur la rotation finale
         // On prend le modulo pour obtenir la position entre 0 et 360
         float normalizedRotation = finalRotation % 360f;
-        // On divise par les degrés par symbole et on arrondit
+        // On divise par les degrï¿½s par symbole et on arrondit
         finalSymbol = Mathf.FloorToInt(normalizedRotation / degreesPerSymbol) + 1;
 
         isSpinning = false;
