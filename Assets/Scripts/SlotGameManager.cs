@@ -53,6 +53,9 @@ public class SlotGameManager : MonoBehaviour
     [SerializeField] GameObject endScreen;
     [SerializeField] Button restartButton;
 
+    [Header("Aniamtions")]
+    [SerializeField] AnimationTest animationManager;
+
 
     void Start()
     {
@@ -67,7 +70,7 @@ public class SlotGameManager : MonoBehaviour
         restartButton.onClick.AddListener(RestartGame);
     }
 
-    void StartSpin() //La fonction qui envoie les roues
+    public void StartSpin() //La fonction qui envoie les roues
     {
         if (isSpinning) return; //On vérifie que c'est pas déjà en train de tourner
         if (currentEcology < spinCost) //On vérifie qu'il nous reste assez de jours
@@ -84,7 +87,8 @@ public class SlotGameManager : MonoBehaviour
     private IEnumerator SpinAllWheels()
     {
         isSpinning = true;
-
+        animationManager.Lever();
+        yield return new WaitForSeconds(0.5f);
         wheel1.Spin();
         yield return new WaitForSeconds(spinTime); //On attend avant de lancer la deuxième
         wheel2.Spin();
@@ -146,9 +150,12 @@ public class SlotGameManager : MonoBehaviour
         }
     }
 
-     void BuyEcology()
+     public void BuyEcology()
     {
-        
+        if(currentEcology >= startingEcology)
+        {
+            return; //On peut pas acheter d'éco si on est déjà full
+        }
         if (currentMoney >= ecologyCost)
         {
             currentMoney -= ecologyCost;
@@ -156,17 +163,19 @@ public class SlotGameManager : MonoBehaviour
             currentEcology = Mathf.Min(currentEcology, startingEcology);
 
             ecologyCost += ecologyCost/2;
+            animationManager.LeftButton();
         }
         UpdateUI();
     }
 
-     void BuyIndustry()
+     public void BuyIndustry()
     {
         if(currentMoney >= industryCost)
         {
             currentMoney -= industryCost;
             gainMult++;
             industryCost += industryCost/2;
+            animationManager.RightButton();
         }
         UpdateUI();
     }

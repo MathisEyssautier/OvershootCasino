@@ -4,7 +4,9 @@ public class AnimationTest : MonoBehaviour
 {
     [SerializeField] private Animator machineAnimator;
     [SerializeField] private Animator leverAnimator;
-    
+    [SerializeField] private Animator rightButtonAnimator;
+    [SerializeField] private Animator leftButtonAnimator;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,4 +26,20 @@ public class AnimationTest : MonoBehaviour
             machineAnimator.Play("light_flicker");
         }
     }
+
+    public void Lever()
+    {
+        leverAnimator.Play("lever_pull");
+        machineAnimator.Play("machine_shake");
+    }
+
+    public void RightButton()
+    {
+        rightButtonAnimator.Play("Button_press");
+    }
+    public void LeftButton()
+    {
+        leftButtonAnimator.Play("buttonleft_press");
+    }
+
 }
