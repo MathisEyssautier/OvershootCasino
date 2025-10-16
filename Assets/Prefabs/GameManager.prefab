@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4173769540680015446
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7063827227929332677}
+  - component: {fileID: 8893479612412787907}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7063827227929332677
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4173769540680015446}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8893479612412787907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4173769540680015446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0915d8dd907de44eb3ce9a2b3ea0a5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SlotGameManager2
+  wheel1: {fileID: 0}
+  wheel2: {fileID: 0}
+  wheel3: {fileID: 0}
+  moneyBar: {fileID: 0}
+  ecologyBar: {fileID: 0}
+  resultText: {fileID: 0}
+  spinCostText: {fileID: 0}
+  moneyText: {fileID: 0}
+  ecoText: {fileID: 0}
+  spinCountText: {fileID: 0}
+  ecologyCost: 5
+  industryCost: 5
+  ecoGain: 50
+  MultText: {fileID: 0}
+  startingMoney: 10
+  startingEcology: 365
+  spinCost: 10
+  spinTime: 0.3
+  gainMult: 1
+  gainLow: 1
+  gainMedium: 2
+  gainHigh: 3
+  ecoLoss: 10
+  endScreen: {fileID: 0}
+  restartButton: {fileID: 0}
+  finalSpinCountText: {fileID: 0}
+  animationManager: {fileID: 0}
