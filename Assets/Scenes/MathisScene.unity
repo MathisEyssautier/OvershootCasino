@@ -733,7 +733,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -210, y: 177}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &627260998
 GameObject:
@@ -4939,6 +4939,10 @@ PrefabInstance:
       propertyPath: CalculScoreText
       value: 
       objectReference: {fileID: 446318178}
+    - target: {fileID: 8893479612412787907, guid: 83b8115316a775244a752e99b88cba22, type: 3}
+      propertyPath: startingEcology
+      value: 295
+      objectReference: {fileID: 0}
     - target: {fileID: 8893479612412787907, guid: 83b8115316a775244a752e99b88cba22, type: 3}
       propertyPath: animationManager
       value: 

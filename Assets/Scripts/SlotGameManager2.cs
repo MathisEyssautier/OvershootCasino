@@ -22,7 +22,7 @@ public class SlotGameManager2 : MonoBehaviour
 
     public int ecologyCost;
     public int industryCost;
-    public int ecoGain;
+    
 
     [SerializeField] TMPro.TextMeshProUGUI MultText;
 
@@ -32,6 +32,7 @@ public class SlotGameManager2 : MonoBehaviour
     public int spinCost;
     public float spinTime;
     public int gainMult;
+    public int ecoGain;
 
     [Header("Valeurs de gain / perte")]
     public int gainLow = 25;
@@ -65,6 +66,7 @@ public class SlotGameManager2 : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI EnergyText;
     [SerializeField] private Renderer JaugeRenderer;
     [SerializeField] private string shaderProperty = "_t";
+    int jaugeMult = 1;
 
 
     void Start()
@@ -176,7 +178,7 @@ public class SlotGameManager2 : MonoBehaviour
 
         if (mainCategory == 1) // BAS
         {
-            int gain = gainLow * multiplier * gainMult;
+            int gain = gainLow * multiplier * gainMult * jaugeMult;
             currentMoney += gain;
 
             // TEXTE FLOTTANT : +X$ en jaune
@@ -188,7 +190,7 @@ public class SlotGameManager2 : MonoBehaviour
         }
         else if (mainCategory == 2) // MOYEN
         {
-            int gain = gainMedium * multiplier * gainMult;
+            int gain = gainMedium * multiplier * gainMult * jaugeMult;
             currentMoney += gain;
 
             // TEXTE FLOTTANT : +X$ en jaune
@@ -200,7 +202,7 @@ public class SlotGameManager2 : MonoBehaviour
         }
         else if (mainCategory == 3) // HAUT
         {
-            int gain = gainHigh * multiplier * gainMult;
+            int gain = gainHigh * multiplier * gainMult * jaugeMult;
             currentMoney += gain;
 
             // TEXTE FLOTTANT : +X$ en jaune
@@ -212,7 +214,7 @@ public class SlotGameManager2 : MonoBehaviour
         }
         else if (mainCategory == 4) // ÉCOLOGIE
         {
-            int loss = ecoLoss * multiplier * gainMult;
+            int loss = ecoLoss * multiplier * gainMult * jaugeMult;
             currentEcology -= loss;
             currentEcology = Mathf.Max(0, currentEcology);
 
@@ -253,6 +255,7 @@ public class SlotGameManager2 : MonoBehaviour
             ecologyCost += ecologyCost / 2;
             animationManager.LeftButton();
         }
+        HoveringLeftButton();
         UpdateUI();
     }
 
@@ -274,6 +277,7 @@ public class SlotGameManager2 : MonoBehaviour
             industryCost += industryCost / 2;
             animationManager.RightButton();
         }
+        HoveringRightButton();
         UpdateUI();
     }
 
@@ -288,13 +292,30 @@ public class SlotGameManager2 : MonoBehaviour
         MultText.text = "x " + gainMult;
         UpdateJauge();
         SoundManager.Instance.UpdateMusicBasedOnEcology(currentEcology, startingEcology);
-
+        CheckJaugeBonus();
         if (currentEcology <= 0)
         {
             endScreen.SetActive(true);
             finalSpinCountText.text = "Vous avez survécu " + spinCount + " tirages !";
             SoundManager.Instance.PlayGameOverMusic();
             SoundManager.Instance.StopAllSounds();
+        }
+    }
+
+    void CheckJaugeBonus()
+    {
+        if (currentEcology >= 330)
+        {
+            jaugeMult = 2;
+        }
+        else if (currentEcology <= 80)
+        {
+            jaugeMult = 4;
+
+        }
+        else
+        {
+            jaugeMult = 1;
         }
     }
 
