@@ -50,8 +50,12 @@ public class SlotGameManager2 : MonoBehaviour
     [SerializeField] Button restartButton;
     [SerializeField] TextMeshProUGUI finalSpinCountText;
 
-    [Header("Aniamtions")]
+    [Header("Animations")]
     [SerializeField] AnimationTest animationManager;
+
+    [Header("Texts")]
+    [SerializeField] private TMPro.TextMeshProUGUI InfoText;
+    [SerializeField] private TMPro.TextMeshProUGUI CalculScoreText;
 
 
     void Start()
@@ -59,6 +63,7 @@ public class SlotGameManager2 : MonoBehaviour
         endScreen.SetActive(false);
         currentMoney = startingMoney;
         currentEcology = startingEcology;
+        InfoText.text = "";
         UpdateUI();
 
         restartButton.onClick.AddListener(RestartGame);
@@ -158,7 +163,10 @@ public class SlotGameManager2 : MonoBehaviour
             else mainCategory = catA;
         }
 
-        if (sameCount == 1) return; // Pas de gain/perte
+        if (sameCount == 1) {
+            
+            return;
+                } // Pas de gain/perte
 
         int multiplier = sameCount == 2 ? 2 : 4;
 
@@ -245,11 +253,11 @@ public class SlotGameManager2 : MonoBehaviour
     {
         moneyBar.value = currentMoney;
         ecologyBar.value = currentEcology;
-        moneyText.text = currentMoney.ToString();
+        moneyText.text = currentMoney.ToString() + " $";
         ecoText.text = currentEcology.ToString();
         spinCostText.text = "Coût : " + spinCost + " Eco ";
         spinCountText.text = "Tirages : " + spinCount;
-        MultText.text = "Mult : " + gainMult;
+        MultText.text = "x " + gainMult;
 
         // IMPORTANT : Mettre à jour la musique en fonction de l'écologie
         SoundManager.Instance.UpdateMusicBasedOnEcology(currentEcology, startingEcology);
@@ -269,5 +277,31 @@ public class SlotGameManager2 : MonoBehaviour
         SoundManager.Instance.PlayBackgroundMusic(); //Pour relancer la musique de fond quand on restart
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
+    }
+
+
+
+
+    //Mouse Over Text
+    
+
+    public void HoveringLever()
+    {
+        InfoText.text = "Spin for " + spinCost + " energy";
+    }
+
+    public void HoveringRightButton()
+    {
+        InfoText.text = "+ 1 Mult for " + industryCost + " $";
+    }
+
+    public void HoveringLeftButton()
+    {
+        InfoText.text = "+ " + ecoGain + " energy for " + ecologyCost + " $";
+    }
+
+    public void StopHovering()
+    {
+        InfoText.text = "";
     }
 }

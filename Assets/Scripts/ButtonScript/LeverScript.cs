@@ -10,4 +10,14 @@ public class LeverScript : MonoBehaviour
         
         // Ton action ici
     }
+
+    public void OnMouseEnter()
+    {
+        GameManager.HoveringLever();
+    }
+
+    public void OnMouseExit()
+    {
+        GameManager.StopHovering();
+    }
 }

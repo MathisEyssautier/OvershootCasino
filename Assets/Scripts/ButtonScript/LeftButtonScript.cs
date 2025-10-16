@@ -10,4 +10,14 @@ public class LeftButtonScript : MonoBehaviour
         
         // Ton action ici
     }
+
+    public void OnMouseEnter()
+    {
+        GameManager.HoveringLeftButton();
+    }
+
+    public void OnMouseExit()
+    {
+        GameManager.StopHovering();
+    }
 }
