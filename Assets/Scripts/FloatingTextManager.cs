@@ -111,4 +111,14 @@ public class FloatingTextManager : MonoBehaviour
     {
         ShowFloatingText("+1", target, Color.red, Vector3.up * 0.5f);
     }
+
+    public void ShowEnergyBoost(Transform target)
+    {
+        ShowFloatingText("x2", target, Color.yellow, Vector3.up * 0.5f);
+    }
+
+    public void ShowCriticalBoost(Transform target)
+    {
+        ShowFloatingText("x4", target, Color.red, Vector3.up * 0.5f);
+    }
 }

@@ -59,6 +59,9 @@ public class SlotGameManager2 : MonoBehaviour
     [SerializeField] Transform moneyTextPosition; // Position du texte d'argent
     [SerializeField] Transform ecoBarPosition; // Position de la barre d'écologie
     [SerializeField] Transform multiPosition; // Position de la barre d'écologie
+    [SerializeField] Transform EnergyBoostPosition; // Position de la barre d'écologie
+    [SerializeField] Transform CriticalBoostPosition; // Position de la barre d'écologie
+
 
     [Header("Texts")]
     [SerializeField] private TMPro.TextMeshProUGUI InfoText;
@@ -66,7 +69,8 @@ public class SlotGameManager2 : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI EnergyText;
     [SerializeField] private Renderer JaugeRenderer;
     [SerializeField] private string shaderProperty = "_t";
-    int jaugeMult = 1;
+    public int jaugeMult = 1;
+    public int jaugeBonus = 1;
 
 
     void Start()
@@ -229,7 +233,7 @@ public class SlotGameManager2 : MonoBehaviour
 
     public void BuyEcology()
     {
-        if (currentEcology >= startingEcology)
+        if (currentEcology >= 365)
         {
             return;
         }
@@ -307,15 +311,18 @@ public class SlotGameManager2 : MonoBehaviour
         if (currentEcology >= 330)
         {
             jaugeMult = 2;
+            
         }
         else if (currentEcology <= 80)
         {
             jaugeMult = 4;
+            
 
         }
         else
         {
             jaugeMult = 1;
+            
         }
     }
 
@@ -325,6 +332,30 @@ public class SlotGameManager2 : MonoBehaviour
         float t = Mathf.Clamp01(currentEcology / 365f);
         // On envoie la valeur au shader
         JaugeRenderer.material.SetFloat(shaderProperty, t);
+        if (currentEcology >= 330 )
+        {
+
+            JaugeRenderer.material.color = new Color(1f, 0.937f, 0f); // #FFF000;
+            if (jaugeBonus != 2)
+            {
+                FloatingTextManager.Instance.ShowEnergyBoost(EnergyBoostPosition);
+            }
+            jaugeBonus = 2;
+        }
+        else if (currentEcology <= 80)
+        {
+            JaugeRenderer.material.color = new Color32(255, 31, 19, 255);
+            if (jaugeBonus != 0)
+            {
+                FloatingTextManager.Instance.ShowCriticalBoost(EnergyBoostPosition);
+            }
+            jaugeBonus = 0;
+        }
+        else
+        {
+            JaugeRenderer.material.color = new Color32(0, 229, 3, 255);
+            jaugeBonus = 1;
+        }
     }
 
     void RestartGame()
