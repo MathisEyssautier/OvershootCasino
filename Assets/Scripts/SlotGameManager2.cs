@@ -20,15 +20,11 @@ public class SlotGameManager2 : MonoBehaviour
     public TextMeshProUGUI ecoText;
     public TextMeshProUGUI spinCountText;
 
-    public Button spinButton;
-    public Button industryButton;
-    public Button ecologyButton;
+
     public int ecologyCost;
     public int industryCost;
     public int ecoGain;
 
-    [SerializeField] TMPro.TextMeshProUGUI industryButtonText;
-    [SerializeField] TMPro.TextMeshProUGUI ecologyButtonText;
     [SerializeField] TMPro.TextMeshProUGUI MultText;
 
     [Header("Valeurs de base")]
@@ -65,9 +61,6 @@ public class SlotGameManager2 : MonoBehaviour
         currentEcology = startingEcology;
         UpdateUI();
 
-        spinButton.onClick.AddListener(StartSpin);
-        ecologyButton.onClick.AddListener(BuyEcology);
-        industryButton.onClick.AddListener(BuyIndustry);
         restartButton.onClick.AddListener(RestartGame);
     }
 
@@ -256,8 +249,6 @@ public class SlotGameManager2 : MonoBehaviour
         ecoText.text = currentEcology.ToString();
         spinCostText.text = "Coût : " + spinCost + " Eco ";
         spinCountText.text = "Tirages : " + spinCount;
-        industryButtonText.text = industryCost + " $" + " for + " + "1 Mult";
-        ecologyButtonText.text = ecologyCost + " $" + " for + " + ecoGain + " Eco";
         MultText.text = "Mult : " + gainMult;
 
         // IMPORTANT : Mettre à jour la musique en fonction de l'écologie
@@ -265,16 +256,11 @@ public class SlotGameManager2 : MonoBehaviour
 
         if (currentEcology <= 0)
         {
-            spinButton.interactable = false;
             endScreen.SetActive(true);
             finalSpinCountText.text = "Vous avez survécu " + spinCount + " tirages !";
             // SON : Game Over
             SoundManager.Instance.PlayGameOverMusic();
             SoundManager.Instance.StopAllSounds(); // Arrêter les autres sons
-        }
-        else
-        {
-            spinButton.interactable = true;
         }
     }
 
