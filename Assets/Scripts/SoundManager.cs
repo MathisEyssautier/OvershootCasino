@@ -69,6 +69,9 @@ public class SoundManager : MonoBehaviour
     private bool isCritical = false;
     private AudioLowPassFilter lowPassFilter;
 
+    [Header("Text")]
+    [SerializeField] private TMPro.TextMeshProUGUI comboText;
+
     void Awake()
     {
         if (Instance == null)
@@ -89,7 +92,7 @@ public class SoundManager : MonoBehaviour
             lowPassFilter = musicSource.gameObject.AddComponent<AudioLowPassFilter>();
             lowPassFilter.cutoffFrequency = normalCutoffFreq;
         }
-
+        comboText.text = "";
         StartCoroutine(PlayIntroThenLoop());
     }
 
@@ -212,10 +215,12 @@ public class SoundManager : MonoBehaviour
         if (multiplier == 2)
         {
             PlaySound(resultSource, winLowX2Sound);
+            comboText.text = "COMBO";
         }
         else if (multiplier == 4)
         {
             PlaySound(resultSource, winLowX4Sound);
+            comboText.text = "MONEY COMBO";
         }
     }
 
@@ -225,10 +230,12 @@ public class SoundManager : MonoBehaviour
         if (multiplier == 2)
         {
             PlaySound(resultSource, winMediumX2Sound);
+            comboText.text = "GOLDEN COMBO";
         }
         else if (multiplier == 4)
         {
             PlaySound(resultSource, winMediumX4Sound);
+            comboText.text = "CASINO COMBO";
         }
     }
 
@@ -238,10 +245,12 @@ public class SoundManager : MonoBehaviour
         if (multiplier == 2)
         {
             PlaySound(resultSource, winHighX2Sound);
+            comboText.text = "DADDY'S COMBO";
         }
         else if (multiplier == 4)
         {
             PlaySound(resultSource, winHighX4Sound);
+            comboText.text = "INCREDIBLE COMBO";
         }
     }
 
@@ -251,10 +260,12 @@ public class SoundManager : MonoBehaviour
         if (multiplier == 2)
         {
             PlaySound(resultSource, loseEcoX2Sound);
+            comboText.text = "FIRE COMBO";
         }
         else if (multiplier == 4)
         {
             PlaySound(resultSource, loseEcoX4Sound);
+            comboText.text = "DISASTER COMBO";
         }
     }
 
@@ -268,12 +279,15 @@ public class SoundManager : MonoBehaviour
         {
             case 0:
                 selectedClip = noCombo1Sound;
+                comboText.text = "DO BETTER";
                 break;
             case 1:
                 selectedClip = noCombo2Sound;
+                comboText.text = "BORING";
                 break;
             case 2:
                 selectedClip = noCombo3Sound;
+                comboText.text = "BOUHOUHOU";
                 break;
         }
 

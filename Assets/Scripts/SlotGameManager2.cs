@@ -217,7 +217,7 @@ public class SlotGameManager2 : MonoBehaviour
 
     public void BuyEcology()
     {
-        if (currentEcology >= startingEcology)
+        if (currentEcology >= 365)
         {
             return;
         }
@@ -230,7 +230,7 @@ public class SlotGameManager2 : MonoBehaviour
             SoundManager.Instance.PlayMoneyLoss();
 
             currentEcology += ecoGain;
-            currentEcology = Mathf.Min(currentEcology, startingEcology);
+            currentEcology = Mathf.Min(currentEcology, 365);
 
             FloatingTextManager.Instance.ShowEcoGain(ecoGain, ecoBarPosition);
             SoundManager.Instance.PlayEcoGain();
