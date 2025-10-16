@@ -3005,18 +3005,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   musicSource: {fileID: 1500434718}
-  backgroundMusic: {fileID: 8300000, guid: c9e212329769eb84dba624b10cd92810, type: 3}
-  introMusic: {fileID: 8300000, guid: 4d8a64dbb7b07704a8bc618add5cb817, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: 4cafe90c34e63114aa7ad970af837efb, type: 3}
+  introMusic: {fileID: 8300000, guid: 5e919db6f29c72a4cabf32d69540eef1, type: 3}
   gameOverMusic: {fileID: 8300000, guid: 5febb1142c2954048a49d6c8721d7138, type: 3}
   victoryMusic: {fileID: 8300000, guid: 297f82160b03b514995474805b672a84, type: 3}
   wheelSource: {fileID: 1500434717}
   wheelSpinSound: {fileID: 8300000, guid: 4adf9b41acb74ac49af44a2907bf30f0, type: 3}
   wheelStopSound: {fileID: 8300000, guid: 1a7a3f5e23da41b44b068f0b33a21bf4, type: 3}
   resultSource: {fileID: 1500434716}
-  winX1Sound: {fileID: 8300000, guid: cd5acf3b88ec90f4ca6f8d9f0ab16921, type: 3}
-  winX2Sound: {fileID: 8300000, guid: 1092094b7a2ce2044b411b64c2951421, type: 3}
-  loseX1Sound: {fileID: 8300000, guid: c73c444d20c7dc3479fa20215772ed9c, type: 3}
-  loseJackpotSound: {fileID: 8300000, guid: c73c444d20c7dc3479fa20215772ed9c, type: 3}
+  winLowX2Sound: {fileID: 8300000, guid: 4aeeabc12ccfd8d458ede49e103a0066, type: 3}
+  winLowX4Sound: {fileID: 8300000, guid: 6e2bc3f1d85539d4d8eb2cf7c5f710a2, type: 3}
+  winMediumX2Sound: {fileID: 8300000, guid: 7967c4d8fa22bad499333d27ff9011f7, type: 3}
+  winMediumX4Sound: {fileID: 8300000, guid: ec51e17a33704c14e9ebc34255b63f3e, type: 3}
+  winHighX2Sound: {fileID: 8300000, guid: d1b3c7bbe759f2646b0c87a94c3cd8a7, type: 3}
+  winHighX4Sound: {fileID: 8300000, guid: 8b8c464ad110a614189fa6c820c13ab1, type: 3}
+  loseEcoX2Sound: {fileID: 8300000, guid: e8fd6e5d97f281e49a38486986c2ed8a, type: 3}
+  loseEcoX4Sound: {fileID: 8300000, guid: 4a7f2bc39fbb48547b9ae27ee4dfa84c, type: 3}
+  noCombo1Sound: {fileID: 8300000, guid: d7207311acee53544aac60b737fc5064, type: 3}
+  noCombo2Sound: {fileID: 8300000, guid: 153b1bb807de94a459e6f456833c87a4, type: 3}
+  noCombo3Sound: {fileID: 8300000, guid: 62d259dd38c03a740bcb143425be4307, type: 3}
   uiSource: {fileID: 1500434715}
   spinButtonSound: {fileID: 8300000, guid: fbe7a4364e7f61c40af1badb07d3e34a, type: 3}
   buyButtonSound: {fileID: 8300000, guid: e53787216bd92a445b5b180caefee35f, type: 3}
@@ -3026,6 +3033,8 @@ MonoBehaviour:
   ecoGainSound: {fileID: 8300000, guid: 92626be7b3a1dea4189546ab016fc432, type: 3}
   ecoLossSound: {fileID: 8300000, guid: 7d99f340a0ec4f441b9ccba917284e74, type: 3}
   criticalWarningSound: {fileID: 8300000, guid: e157f65a6860a0242ac3a3156ae1c848, type: 3}
+  energyBoostSound: {fileID: 8300000, guid: d71e30a1f14e3a54c802a18144e1e512, type: 3}
+  criticalBoostSound: {fileID: 8300000, guid: baa9b18567c4c9447aaa53b2caa40fa2, type: 3}
   normalPitch: 1
   minPitch: 0.3
   normalVolume: 0.5

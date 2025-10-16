@@ -18,12 +18,27 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip wheelSpinSound;
     [SerializeField] private AudioClip wheelStopSound;
 
-    [Header("=== RÉSULTATS ===")]
+    [Header("=== RÉSULTATS - CATÉGORIE BAS ===")]
     [SerializeField] private AudioSource resultSource; // Source pour les résultats
-    [SerializeField] private AudioClip winX1Sound; // Gain simple (2 symboles)
-    [SerializeField] private AudioClip winX2Sound; // Jackpot (3 symboles)
-    [SerializeField] private AudioClip loseX1Sound; // Perte simple (2 symboles écologie)
-    [SerializeField] private AudioClip loseJackpotSound; // Perte jackpot (3 symboles écologie)
+    [SerializeField] private AudioClip winLowX2Sound; // 2 symboles bas
+    [SerializeField] private AudioClip winLowX4Sound; // 3 symboles bas (jackpot)
+
+    [Header("=== RÉSULTATS - CATÉGORIE MOYEN ===")]
+    [SerializeField] private AudioClip winMediumX2Sound; // 2 symboles moyens
+    [SerializeField] private AudioClip winMediumX4Sound; // 3 symboles moyens (jackpot)
+
+    [Header("=== RÉSULTATS - CATÉGORIE HAUT ===")]
+    [SerializeField] private AudioClip winHighX2Sound; // 2 symboles hauts
+    [SerializeField] private AudioClip winHighX4Sound; // 3 symboles hauts (jackpot)
+
+    [Header("=== RÉSULTATS - CATÉGORIE ÉCOLOGIE (PERTES) ===")]
+    [SerializeField] private AudioClip loseEcoX2Sound; // 2 symboles écologie
+    [SerializeField] private AudioClip loseEcoX4Sound; // 3 symboles écologie (jackpot négatif)
+
+    [Header("=== RÉSULTATS - AUCUN COMBO ===")]
+    [SerializeField] private AudioClip noCombo1Sound; // Son neutre 1
+    [SerializeField] private AudioClip noCombo2Sound; // Son neutre 2
+    [SerializeField] private AudioClip noCombo3Sound; // Son neutre 3
 
     [Header("=== UI / BOUTONS ===")]
     [SerializeField] private AudioSource uiSource; // Source pour l'UI
@@ -37,6 +52,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip ecoGainSound;
     [SerializeField] private AudioClip ecoLossSound;
     [SerializeField] private AudioClip criticalWarningSound; // Quand écologie devient critique
+    [SerializeField] private AudioClip energyBoostSound; // Quand on entre en zone haute d'énergie
+    [SerializeField] private AudioClip criticalBoostSound; // Quand on entre en zone critique d'énergie
 
     [Header("=== PARAMÈTRES MUSIQUE ===")]
     [SerializeField] private float normalPitch = 1f; // Pitch normal
@@ -54,11 +71,10 @@ public class SoundManager : MonoBehaviour
 
     void Awake()
     {
-        // Singleton : une seule instance de SoundManager
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Persiste entre les scènes
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -68,14 +84,12 @@ public class SoundManager : MonoBehaviour
 
     void Start()
     {
-        // Ajouter un filtre Low Pass si activé
         if (useLowPassFilter && musicSource != null)
         {
             lowPassFilter = musicSource.gameObject.AddComponent<AudioLowPassFilter>();
             lowPassFilter.cutoffFrequency = normalCutoffFreq;
         }
 
-        // Démarrer la musique de fond
         StartCoroutine(PlayIntroThenLoop());
     }
 
@@ -90,13 +104,12 @@ public class SoundManager : MonoBehaviour
             musicSource.volume = normalVolume;
             musicSource.Play();
 
-            // Attendre la durée de l’intro (145 secondes = 2 min 25)
             yield return new WaitForSeconds(145f);
         }
 
-        // Ensuite, lancer la musique principale
         PlayBackgroundMusic();
     }
+
     public void PlayBackgroundMusic()
     {
         if (backgroundMusic != null && musicSource != null)
@@ -105,11 +118,12 @@ public class SoundManager : MonoBehaviour
             musicSource.loop = true;
             musicSource.volume = normalVolume;
             musicSource.pitch = normalPitch;
-            // Réinitialiser le filtre Low Pass
+
             if (useLowPassFilter && lowPassFilter != null)
             {
                 lowPassFilter.cutoffFrequency = normalCutoffFreq;
             }
+
             musicSource.Play();
         }
     }
@@ -140,30 +154,24 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    // Fonction pour mettre à jour la musique en fonction de l'écologie
     public void UpdateMusicBasedOnEcology(int currentEco, int maxEco)
     {
         if (musicSource == null || !musicSource.isPlaying) return;
 
-        // Calcul du pourcentage d'écologie
         currentEcoPercentage = (float)currentEco / maxEco * 100f;
 
-        // Si on est en dessous du seuil critique
         if (currentEcoPercentage <= criticalEcoThreshold)
         {
-            // Interpolation : plus l'écologie est basse, plus le pitch baisse et le volume monte
-            float severity = 1f - (currentEcoPercentage / criticalEcoThreshold); // 0 à 1
+            float severity = 1f - (currentEcoPercentage / criticalEcoThreshold);
 
             musicSource.pitch = Mathf.Lerp(normalPitch, minPitch, severity);
             musicSource.volume = Mathf.Lerp(normalVolume, maxVolume, severity);
 
-            // Appliquer le filtre Low Pass pour étouffer le son
             if (useLowPassFilter && lowPassFilter != null)
             {
                 lowPassFilter.cutoffFrequency = Mathf.Lerp(normalCutoffFreq, minCutoffFreq, severity);
             }
 
-            // Son d'alerte si on vient juste de devenir critique
             if (!isCritical)
             {
                 isCritical = true;
@@ -172,7 +180,6 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            // Retour à la normale
             musicSource.pitch = normalPitch;
             musicSource.volume = normalVolume;
 
@@ -199,28 +206,78 @@ public class SoundManager : MonoBehaviour
 
     // ==================== RÉSULTATS ====================
 
-    public void PlayWinSound(int multiplier)
+    // Sons pour catégorie BAS
+    public void PlayWinLowSound(int multiplier)
     {
-        if (multiplier == 2) // 2 symboles identiques
+        if (multiplier == 2)
         {
-            PlaySound(resultSource, winX1Sound);
+            PlaySound(resultSource, winLowX2Sound);
         }
-        else if (multiplier == 4) // 3 symboles identiques (jackpot)
+        else if (multiplier == 4)
         {
-            PlaySound(resultSource, winX2Sound);
+            PlaySound(resultSource, winLowX4Sound);
         }
     }
 
-    public void PlayLoseSound(int multiplier)
+    // Sons pour catégorie MOYEN
+    public void PlayWinMediumSound(int multiplier)
     {
-        if (multiplier == 2) // 2 symboles écologie
+        if (multiplier == 2)
         {
-            PlaySound(resultSource, loseX1Sound);
+            PlaySound(resultSource, winMediumX2Sound);
         }
-        else if (multiplier == 4) // 3 symboles écologie (jackpot négatif)
+        else if (multiplier == 4)
         {
-            PlaySound(resultSource, loseJackpotSound);
+            PlaySound(resultSource, winMediumX4Sound);
         }
+    }
+
+    // Sons pour catégorie HAUT
+    public void PlayWinHighSound(int multiplier)
+    {
+        if (multiplier == 2)
+        {
+            PlaySound(resultSource, winHighX2Sound);
+        }
+        else if (multiplier == 4)
+        {
+            PlaySound(resultSource, winHighX4Sound);
+        }
+    }
+
+    // Sons pour catégorie ÉCOLOGIE (pertes)
+    public void PlayLoseEcoSound(int multiplier)
+    {
+        if (multiplier == 2)
+        {
+            PlaySound(resultSource, loseEcoX2Sound);
+        }
+        else if (multiplier == 4)
+        {
+            PlaySound(resultSource, loseEcoX4Sound);
+        }
+    }
+
+    // Son aléatoire quand aucun combo
+    public void PlayNoComboSound()
+    {
+        int randomIndex = Random.Range(0, 3);
+        AudioClip selectedClip = null;
+
+        switch (randomIndex)
+        {
+            case 0:
+                selectedClip = noCombo1Sound;
+                break;
+            case 1:
+                selectedClip = noCombo2Sound;
+                break;
+            case 2:
+                selectedClip = noCombo3Sound;
+                break;
+        }
+
+        PlaySound(resultSource, selectedClip);
     }
 
     // ==================== UI ====================
@@ -257,9 +314,18 @@ public class SoundManager : MonoBehaviour
         PlaySound(feedbackSource, ecoLossSound);
     }
 
+    public void PlayEnergyBoost()
+    {
+        PlaySound(feedbackSource, energyBoostSound);
+    }
+
+    public void PlayCriticalBoost()
+    {
+        PlaySound(feedbackSource, criticalBoostSound);
+    }
+
     // ==================== UTILITAIRE ====================
 
-    // Fonction générique pour jouer un son
     private void PlaySound(AudioSource source, AudioClip clip)
     {
         if (source != null && clip != null)
@@ -268,7 +334,6 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    // Fonction pour arrêter tous les sons (utile pour le game over)
     public void StopAllSounds()
     {
         wheelSource?.Stop();

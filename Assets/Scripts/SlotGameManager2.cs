@@ -19,10 +19,8 @@ public class SlotGameManager2 : MonoBehaviour
     public TextMeshProUGUI moneyText;
     public TextMeshProUGUI ecoText;
     public TextMeshProUGUI spinCountText;
-
     public int ecologyCost;
     public int industryCost;
-    
 
     [SerializeField] TMPro.TextMeshProUGUI MultText;
 
@@ -53,15 +51,11 @@ public class SlotGameManager2 : MonoBehaviour
     [Header("Animations")]
     [SerializeField] AnimationTest animationManager;
 
-
     [Header("Positions pour les textes flottants")]
-    [SerializeField] Transform leverPosition; // Position du levier
-    [SerializeField] Transform moneyTextPosition; // Position du texte d'argent
-    [SerializeField] Transform ecoBarPosition; // Position de la barre d'écologie
-    [SerializeField] Transform multiPosition; // Position de la barre d'écologie
-    [SerializeField] Transform EnergyBoostPosition; // Position de la barre d'écologie
-    [SerializeField] Transform CriticalBoostPosition; // Position de la barre d'écologie
-
+    [SerializeField] Transform leverPosition;
+    [SerializeField] Transform moneyTextPosition;
+    [SerializeField] Transform ecoBarPosition;
+    [SerializeField] Transform multiPosition;
 
     [Header("Texts")]
     [SerializeField] private TMPro.TextMeshProUGUI InfoText;
@@ -69,9 +63,9 @@ public class SlotGameManager2 : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI EnergyText;
     [SerializeField] private Renderer JaugeRenderer;
     [SerializeField] private string shaderProperty = "_t";
-    public int jaugeMult = 1;
-    public int jaugeBonus = 1;
 
+    private int jaugeMult = 1;
+    private int previousJaugeBonus = 1; // Pour détecter les changements de zone
 
     void Start()
     {
@@ -169,71 +163,61 @@ public class SlotGameManager2 : MonoBehaviour
             else mainCategory = catA;
         }
 
-
-        if (sameCount == 1) return;
-
-        if (sameCount == 1) {
-            
+        // AUCUN COMBO : Jouer un son neutre aléatoire
+        if (sameCount == 1)
+        {
+            SoundManager.Instance.PlayNoComboSound();
             return;
-                } // Pas de gain/perte
-
+        }
 
         int multiplier = sameCount == 2 ? 2 : 4;
 
-        if (mainCategory == 1) // BAS
+        if (mainCategory == 1) // CATÉGORIE BAS
         {
             int gain = gainLow * multiplier * gainMult * jaugeMult;
             currentMoney += gain;
 
-            // TEXTE FLOTTANT : +X$ en jaune
             FloatingTextManager.Instance.ShowMoneyGain(gain, moneyTextPosition);
-
             SoundManager.Instance.PlayMoneyGain();
-            SoundManager.Instance.PlayWinSound(multiplier);
+            SoundManager.Instance.PlayWinLowSound(multiplier);
             Debug.Log("Gain BAS : " + gain + "$");
         }
-        else if (mainCategory == 2) // MOYEN
+        else if (mainCategory == 2) // CATÉGORIE MOYEN
         {
             int gain = gainMedium * multiplier * gainMult * jaugeMult;
             currentMoney += gain;
 
-            // TEXTE FLOTTANT : +X$ en jaune
             FloatingTextManager.Instance.ShowMoneyGain(gain, moneyTextPosition);
-
             SoundManager.Instance.PlayMoneyGain();
-            SoundManager.Instance.PlayWinSound(multiplier);
+            SoundManager.Instance.PlayWinMediumSound(multiplier);
             Debug.Log("Gain MOYEN : " + gain + "$");
         }
-        else if (mainCategory == 3) // HAUT
+        else if (mainCategory == 3) // CATÉGORIE HAUT
         {
             int gain = gainHigh * multiplier * gainMult * jaugeMult;
             currentMoney += gain;
 
-            // TEXTE FLOTTANT : +X$ en jaune
             FloatingTextManager.Instance.ShowMoneyGain(gain, moneyTextPosition);
-
             SoundManager.Instance.PlayMoneyGain();
-            SoundManager.Instance.PlayWinSound(multiplier);
+            SoundManager.Instance.PlayWinHighSound(multiplier);
             Debug.Log("Gain HAUT : " + gain + "$");
         }
-        else if (mainCategory == 4) // ÉCOLOGIE
+        else if (mainCategory == 4) // CATÉGORIE ÉCOLOGIE (PERTES)
         {
             int loss = ecoLoss * multiplier * gainMult * jaugeMult;
             currentEcology -= loss;
             currentEcology = Mathf.Max(0, currentEcology);
 
-            // TEXTE FLOTTANT : -X en rouge à côté de la barre d'écologie
             FloatingTextManager.Instance.ShowEcoLoss(loss, ecoBarPosition);
-
             SoundManager.Instance.PlayEcoLoss();
-            SoundManager.Instance.PlayLoseSound(multiplier);
+            SoundManager.Instance.PlayLoseEcoSound(multiplier);
             Debug.Log("Perte ÉCOLOGIE : " + loss + " éco !");
         }
     }
 
     public void BuyEcology()
     {
-        if (currentEcology >= 365)
+        if (currentEcology >= startingEcology)
         {
             return;
         }
@@ -242,18 +226,13 @@ public class SlotGameManager2 : MonoBehaviour
             SoundManager.Instance.PlayBuyButton();
 
             currentMoney -= ecologyCost;
-
-            // TEXTE FLOTTANT : -X$ en jaune (perte d'argent)
             FloatingTextManager.Instance.ShowMoneyLoss(ecologyCost, moneyTextPosition);
-
             SoundManager.Instance.PlayMoneyLoss();
 
             currentEcology += ecoGain;
-            currentEcology = Mathf.Min(currentEcology, 365);
+            currentEcology = Mathf.Min(currentEcology, startingEcology);
 
-            // TEXTE FLOTTANT : +X en vert (gain d'écologie)
             FloatingTextManager.Instance.ShowEcoGain(ecoGain, ecoBarPosition);
-
             SoundManager.Instance.PlayEcoGain();
 
             ecologyCost += ecologyCost / 2;
@@ -270,11 +249,8 @@ public class SlotGameManager2 : MonoBehaviour
             SoundManager.Instance.PlayBuyButton();
 
             currentMoney -= industryCost;
-
-            // TEXTE FLOTTANT : -X$ en jaune (perte d'argent)
             FloatingTextManager.Instance.ShowMoneyLoss(industryCost, moneyTextPosition);
             FloatingTextManager.Instance.ShowMultGain(multiPosition);
-
             SoundManager.Instance.PlayMoneyLoss();
 
             gainMult++;
@@ -294,9 +270,12 @@ public class SlotGameManager2 : MonoBehaviour
         spinCostText.text = "Coût : " + spinCost + " Eco ";
         spinCountText.text = "Tirages : " + spinCount;
         MultText.text = "x " + gainMult;
+
         UpdateJauge();
-        SoundManager.Instance.UpdateMusicBasedOnEcology(currentEcology, startingEcology);
         CheckJaugeBonus();
+
+        SoundManager.Instance.UpdateMusicBasedOnEcology(currentEcology, startingEcology);
+
         if (currentEcology <= 0)
         {
             endScreen.SetActive(true);
@@ -311,51 +290,53 @@ public class SlotGameManager2 : MonoBehaviour
         if (currentEcology >= 330)
         {
             jaugeMult = 2;
-            
         }
         else if (currentEcology <= 80)
         {
             jaugeMult = 4;
-            
-
         }
         else
         {
             jaugeMult = 1;
-            
         }
     }
 
-     void UpdateJauge()
+    void UpdateJauge()
     {
-
         float t = Mathf.Clamp01(currentEcology / 365f);
-        // On envoie la valeur au shader
         JaugeRenderer.material.SetFloat(shaderProperty, t);
-        if (currentEcology >= 330 )
-        {
 
-            JaugeRenderer.material.color = new Color(1f, 0.937f, 0f); // #FFF000;
-            if (jaugeBonus != 2)
+        int currentBonus = 1; // Valeur par défaut (zone normale)
+
+        if (currentEcology >= 330)
+        {
+            JaugeRenderer.material.color = new Color(1f, 0.937f, 0f); // Jaune
+            currentBonus = 2;
+
+            // Si on vient juste d'entrer dans la zone haute
+            if (previousJaugeBonus != 2)
             {
-                FloatingTextManager.Instance.ShowEnergyBoost(EnergyBoostPosition);
+                SoundManager.Instance.PlayEnergyBoost();
             }
-            jaugeBonus = 2;
         }
         else if (currentEcology <= 80)
         {
-            JaugeRenderer.material.color = new Color32(255, 31, 19, 255);
-            if (jaugeBonus != 0)
+            JaugeRenderer.material.color = new Color32(255, 31, 19, 255); // Rouge
+            currentBonus = 0;
+
+            // Si on vient juste d'entrer dans la zone critique
+            if (previousJaugeBonus != 0)
             {
-                FloatingTextManager.Instance.ShowCriticalBoost(EnergyBoostPosition);
+                SoundManager.Instance.PlayCriticalBoost();
             }
-            jaugeBonus = 0;
         }
         else
         {
-            JaugeRenderer.material.color = new Color32(0, 229, 3, 255);
-            jaugeBonus = 1;
+            JaugeRenderer.material.color = new Color32(0, 229, 3, 255); // Vert
+            currentBonus = 1;
         }
+
+        previousJaugeBonus = currentBonus;
     }
 
     void RestartGame()
@@ -365,12 +346,7 @@ public class SlotGameManager2 : MonoBehaviour
         SceneManager.LoadScene(currentScene.name);
     }
 
-
-
-
-    //Mouse Over Text
-    
-
+    // Mouse Over Text
     public void HoveringLever()
     {
         InfoText.text = "Spin for " + spinCost + " energy";
