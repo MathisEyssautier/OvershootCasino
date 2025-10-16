@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class BackgroundManager : MonoBehaviour
     [SerializeField] GameObject buildingsContainer;
     [SerializeField] Image sky;
     [SerializeField] private float maxHeight = 3f;
+    [SerializeField] private Texture2D[] sunTextures;
 
     public float T = 0;
     
@@ -24,10 +26,26 @@ public class BackgroundManager : MonoBehaviour
     private List<GameObject> _buildings = new();
     private List<GameObject> _trees = new();
     
+    private Color _skyColorStart;
+    private Color _horizonColorStart;
+    private Color _sunColorStart1;
+    private Color _sunColorStart2;
+    
+    private Material _skyboxMaterial;
+    
     void Start()
     {
-        _skyMat = sky.material;
-        _skyMat.SetFloat("_Blend", 0);
+        _skyboxMaterial = RenderSettings.skybox;
+
+        var coroutine = UpdateSun(0.05f);
+        StartCoroutine(coroutine);
+
+        _skyColorStart = _skyboxMaterial.GetColor("_SkyColor");
+        _horizonColorStart = _skyboxMaterial.GetColor("_HorizonColor");
+        _sunColorStart1 = _skyboxMaterial.GetColor("_SunColorOne");
+        _sunColorStart2 = _skyboxMaterial.GetColor("_SunColorTwo");
+
+        
 
         for (int i = 0; i < buildingsContainer.transform.childCount; i++)
         {
@@ -69,7 +87,8 @@ public class BackgroundManager : MonoBehaviour
     void Update()
     {
         T += Time.deltaTime/10;
-        _skyMat.SetFloat("_Blend", Math.Clamp(T, 0, 1));
+        
+        
         
         for (int i = 0; i < _buildings.Count; i++)
         {
@@ -87,6 +106,16 @@ public class BackgroundManager : MonoBehaviour
             Vector3 pos = _startPositionsTrees[i];
             pos.y += Mathf.Lerp(0f, _endPositionsTrees[i], t);
             _trees[i].transform.position = pos;
+        }
+    }
+    
+    private IEnumerator UpdateSun(float waitTime) {
+        int i = 0;
+        while (true) {
+            _skyboxMaterial.SetTexture("_SunMask", sunTextures[i]);
+            i++;
+            if (i > 3) i = 0;
+            yield return new WaitForSeconds(waitTime);
         }
     }
 }
