@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class SoundManager : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class SoundManager : MonoBehaviour
     [Header("=== MUSIQUES ===")]
     [SerializeField] private AudioSource musicSource; // Source pour la musique de fond
     [SerializeField] private AudioClip backgroundMusic;
+    [SerializeField] private AudioClip introMusic;
     [SerializeField] private AudioClip gameOverMusic;
     [SerializeField] private AudioClip victoryMusic;
 
@@ -74,11 +76,27 @@ public class SoundManager : MonoBehaviour
         }
 
         // Démarrer la musique de fond
-        PlayBackgroundMusic();
+        StartCoroutine(PlayIntroThenLoop());
     }
 
     // ==================== MUSIQUES ====================
 
+    private IEnumerator PlayIntroThenLoop()
+    {
+        if (introMusic != null)
+        {
+            musicSource.clip = introMusic;
+            musicSource.loop = false;
+            musicSource.volume = normalVolume;
+            musicSource.Play();
+
+            // Attendre la durée de l’intro (145 secondes = 2 min 25)
+            yield return new WaitForSeconds(145f);
+        }
+
+        // Ensuite, lancer la musique principale
+        PlayBackgroundMusic();
+    }
     public void PlayBackgroundMusic()
     {
         if (backgroundMusic != null && musicSource != null)
