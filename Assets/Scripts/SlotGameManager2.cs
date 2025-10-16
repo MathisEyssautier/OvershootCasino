@@ -245,7 +245,7 @@ public class SlotGameManager2 : MonoBehaviour
             SoundManager.Instance.PlayMoneyLoss();
 
             currentEcology += ecoGain;
-            currentEcology = Mathf.Min(currentEcology, startingEcology);
+            currentEcology = Mathf.Min(currentEcology, 365);
 
             // TEXTE FLOTTANT : +X en vert (gain d'écologie)
             FloatingTextManager.Instance.ShowEcoGain(ecoGain, ecoBarPosition);
