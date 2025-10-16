@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ObjectClickManager : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
     void Update()
     {

@@ -10,4 +10,14 @@ public class RightButtonScript : MonoBehaviour
         
         // Ton action ici
     }
+
+    public void OnMouseEnter()
+    {
+        GameManager.HoveringRightButton();
+    }
+
+    public void OnMouseExit()
+    {
+        GameManager.StopHovering();
+    }
 }
