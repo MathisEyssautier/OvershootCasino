@@ -54,6 +54,10 @@ public class SlotGameManager2 : MonoBehaviour
     [SerializeField] Button restartButton;
     [SerializeField] TextMeshProUGUI finalSpinCountText;
 
+    [Header("Aniamtions")]
+    [SerializeField] AnimationTest animationManager;
+
+
     void Start()
     {
         endScreen.SetActive(false);
@@ -67,7 +71,7 @@ public class SlotGameManager2 : MonoBehaviour
         restartButton.onClick.AddListener(RestartGame);
     }
 
-    void StartSpin()
+    public void StartSpin()
     {
         if (isSpinning) return;
         if (currentEcology < spinCost)
@@ -93,7 +97,8 @@ public class SlotGameManager2 : MonoBehaviour
     private IEnumerator SpinAllWheels()
     {
         isSpinning = true;
-
+        animationManager.Lever();
+        yield return new WaitForSeconds(0.5f);
         // SON : Roue 1 qui tourne
         SoundManager.Instance.PlayWheelSpin();
         
@@ -196,8 +201,12 @@ public class SlotGameManager2 : MonoBehaviour
         }
     }
 
-    void BuyEcology()
+    public void BuyEcology()
     {
+        if (currentEcology >= startingEcology)
+        {
+            return; //On peut pas acheter d'éco si on est déjà full
+        }
         if (currentMoney >= ecologyCost)
         {
             // SON : Achat
@@ -215,11 +224,12 @@ public class SlotGameManager2 : MonoBehaviour
             SoundManager.Instance.PlayEcoGain();
 
             ecologyCost += ecologyCost / 2;
+            animationManager.LeftButton();
         }
         UpdateUI();
     }
 
-    void BuyIndustry()
+    public void BuyIndustry()
     {
         if (currentMoney >= industryCost)
         {
@@ -233,6 +243,7 @@ public class SlotGameManager2 : MonoBehaviour
 
             gainMult++;
             industryCost += industryCost / 2;
+            animationManager.RightButton();
         }
         UpdateUI();
     }
