@@ -52,17 +52,24 @@ public class SlotGameManager2 : MonoBehaviour
     [Header("Animations")]
     [SerializeField] AnimationTest animationManager;
 
+
     [Header("Positions pour les textes flottants")]
     [SerializeField] Transform leverPosition; // Position du levier
     [SerializeField] Transform moneyTextPosition; // Position du texte d'argent
     [SerializeField] Transform ecoBarPosition; // Position de la barre d'écologie
     [SerializeField] Transform multiPosition; // Position de la barre d'écologie
 
+    [Header("Texts")]
+    [SerializeField] private TMPro.TextMeshProUGUI InfoText;
+    [SerializeField] private TMPro.TextMeshProUGUI CalculScoreText;
+
+
     void Start()
     {
         endScreen.SetActive(false);
         currentMoney = startingMoney;
         currentEcology = startingEcology;
+        InfoText.text = "";
         UpdateUI();
 
         restartButton.onClick.AddListener(RestartGame);
@@ -153,7 +160,14 @@ public class SlotGameManager2 : MonoBehaviour
             else mainCategory = catA;
         }
 
+
         if (sameCount == 1) return;
+
+        if (sameCount == 1) {
+            
+            return;
+                } // Pas de gain/perte
+
 
         int multiplier = sameCount == 2 ? 2 : 4;
 
@@ -264,11 +278,11 @@ public class SlotGameManager2 : MonoBehaviour
     {
         moneyBar.value = currentMoney;
         ecologyBar.value = currentEcology;
-        moneyText.text = currentMoney.ToString();
+        moneyText.text = currentMoney.ToString() + " $";
         ecoText.text = currentEcology.ToString();
         spinCostText.text = "Coût : " + spinCost + " Eco ";
         spinCountText.text = "Tirages : " + spinCount;
-        MultText.text = "Mult : " + gainMult;
+        MultText.text = "x " + gainMult;
 
         SoundManager.Instance.UpdateMusicBasedOnEcology(currentEcology, startingEcology);
 
@@ -286,5 +300,31 @@ public class SlotGameManager2 : MonoBehaviour
         SoundManager.Instance.PlayBackgroundMusic();
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
+    }
+
+
+
+
+    //Mouse Over Text
+    
+
+    public void HoveringLever()
+    {
+        InfoText.text = "Spin for " + spinCost + " energy";
+    }
+
+    public void HoveringRightButton()
+    {
+        InfoText.text = "+ 1 Mult for " + industryCost + " $";
+    }
+
+    public void HoveringLeftButton()
+    {
+        InfoText.text = "+ " + ecoGain + " energy for " + ecologyCost + " $";
+    }
+
+    public void StopHovering()
+    {
+        InfoText.text = "";
     }
 }
