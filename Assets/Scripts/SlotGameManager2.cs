@@ -20,7 +20,6 @@ public class SlotGameManager2 : MonoBehaviour
     public TextMeshProUGUI ecoText;
     public TextMeshProUGUI spinCountText;
 
-
     public int ecologyCost;
     public int industryCost;
     public int ecoGain;
@@ -50,9 +49,14 @@ public class SlotGameManager2 : MonoBehaviour
     [SerializeField] Button restartButton;
     [SerializeField] TextMeshProUGUI finalSpinCountText;
 
-    [Header("Aniamtions")]
+    [Header("Animations")]
     [SerializeField] AnimationTest animationManager;
 
+    [Header("Positions pour les textes flottants")]
+    [SerializeField] Transform leverPosition; // Position du levier
+    [SerializeField] Transform moneyTextPosition; // Position du texte d'argent
+    [SerializeField] Transform ecoBarPosition; // Position de la barre d'écologie
+    [SerializeField] Transform multiPosition; // Position de la barre d'écologie
 
     void Start()
     {
@@ -70,18 +74,16 @@ public class SlotGameManager2 : MonoBehaviour
         if (currentEcology < spinCost)
         {
             resultText.text = "Pas assez de jours !";
-            SoundManager.Instance.PlayMoneyLoss(); // Son d'échec
+            SoundManager.Instance.PlayMoneyLoss();
             return;
         }
 
-        // SON : Clic de la tireuse
         SoundManager.Instance.PlaySpinButton();
 
         currentEcology -= spinCost;
         spinCount++;
 
-        // SON : Perte d'écologie
-        //SoundManager.Instance.PlayEcoLoss();
+        FloatingTextManager.Instance.ShowSpinCost(spinCost, leverPosition);
 
         UpdateUI();
         StartCoroutine(SpinAllWheels());
@@ -92,25 +94,22 @@ public class SlotGameManager2 : MonoBehaviour
         isSpinning = true;
         animationManager.Lever();
         yield return new WaitForSeconds(0.5f);
-        // SON : Roue 1 qui tourne
+
         SoundManager.Instance.PlayWheelSpin();
-        
+
         wheel1.Spin();
         yield return new WaitForSeconds(spinTime);
 
         wheel2.Spin();
-
         yield return new WaitForSeconds(spinTime);
 
         wheel3.Spin();
 
-        // Attendre que toutes les roues finissent
         while (wheel1.IsSpinning() || wheel2.IsSpinning() || wheel3.IsSpinning())
         {
             yield return null;
         }
 
-        // SON : Toutes les roues s'arrêtent
         SoundManager.Instance.PlayWheelStop();
 
         int r1 = wheel1.GetFinalSymbol();
@@ -127,70 +126,85 @@ public class SlotGameManager2 : MonoBehaviour
 
     void ApplyResult(int a, int b, int c)
     {
-        // Fonction pour convertir un symbole en catégorie
         int GetCategory(int symbol)
         {
-            if (symbol == 1 || symbol == 4 || symbol == 7) return 1; // Catégorie Bas
-            if (symbol == 2 || symbol == 5) return 2; // Catégorie Moyen
-            if (symbol == 8) return 3; // Catégorie Haut
-            if (symbol == 3 || symbol == 6) return 4; // Catégorie Écologie
-            return 0; // Symbole invalide
+            if (symbol == 1 || symbol == 4 || symbol == 7) return 1;
+            if (symbol == 2 || symbol == 5) return 2;
+            if (symbol == 8) return 3;
+            if (symbol == 3 || symbol == 6) return 4;
+            return 0;
         }
 
-        // Conversion des symboles en catégories
         int catA = GetCategory(a);
         int catB = GetCategory(b);
         int catC = GetCategory(c);
 
-        // Comptage des catégories identiques
         int sameCount = 1;
         int mainCategory = catA;
 
         if (catB == catA && catC == catA)
         {
-            sameCount = 3; // Les 3 sont dans la même catégorie
+            sameCount = 3;
         }
         else if (catB == catA || catB == catC || catC == catA)
         {
-            sameCount = 2; // 2 symboles dans la même catégorie
-            // On détermine quelle catégorie est en double
+            sameCount = 2;
             if (catB == catA || catB == catC) mainCategory = catB;
             else mainCategory = catA;
         }
 
-        if (sameCount == 1) return; // Pas de gain/perte
+        if (sameCount == 1) return;
 
         int multiplier = sameCount == 2 ? 2 : 4;
 
-        // Application des gains/pertes selon la catégorie
-        if (mainCategory == 1) // Catégorie BAS
+        if (mainCategory == 1) // BAS
         {
-            currentMoney += gainLow * multiplier * gainMult;
+            int gain = gainLow * multiplier * gainMult;
+            currentMoney += gain;
+
+            // TEXTE FLOTTANT : +X$ en jaune
+            FloatingTextManager.Instance.ShowMoneyGain(gain, moneyTextPosition);
+
             SoundManager.Instance.PlayMoneyGain();
             SoundManager.Instance.PlayWinSound(multiplier);
-            Debug.Log("Gain BAS : " + (gainLow * multiplier * gainMult) + "$");
+            Debug.Log("Gain BAS : " + gain + "$");
         }
-        else if (mainCategory == 2) // Catégorie MOYEN
+        else if (mainCategory == 2) // MOYEN
         {
-            currentMoney += gainMedium * multiplier * gainMult;
+            int gain = gainMedium * multiplier * gainMult;
+            currentMoney += gain;
+
+            // TEXTE FLOTTANT : +X$ en jaune
+            FloatingTextManager.Instance.ShowMoneyGain(gain, moneyTextPosition);
+
             SoundManager.Instance.PlayMoneyGain();
             SoundManager.Instance.PlayWinSound(multiplier);
-            Debug.Log("Gain MOYEN : " + (gainMedium * multiplier * gainMult) + "$");
+            Debug.Log("Gain MOYEN : " + gain + "$");
         }
-        else if (mainCategory == 3) // Catégorie HAUT
+        else if (mainCategory == 3) // HAUT
         {
-            currentMoney += gainHigh * multiplier * gainMult;
+            int gain = gainHigh * multiplier * gainMult;
+            currentMoney += gain;
+
+            // TEXTE FLOTTANT : +X$ en jaune
+            FloatingTextManager.Instance.ShowMoneyGain(gain, moneyTextPosition);
+
             SoundManager.Instance.PlayMoneyGain();
             SoundManager.Instance.PlayWinSound(multiplier);
-            Debug.Log("Gain HAUT : " + (gainHigh * multiplier * gainMult) + "$");
+            Debug.Log("Gain HAUT : " + gain + "$");
         }
-        else if (mainCategory == 4) // Catégorie ÉCOLOGIE
+        else if (mainCategory == 4) // ÉCOLOGIE
         {
-            currentEcology -= ecoLoss * multiplier * gainMult;
+            int loss = ecoLoss * multiplier * gainMult;
+            currentEcology -= loss;
             currentEcology = Mathf.Max(0, currentEcology);
+
+            // TEXTE FLOTTANT : -X en rouge à côté de la barre d'écologie
+            FloatingTextManager.Instance.ShowEcoLoss(loss, ecoBarPosition);
+
             SoundManager.Instance.PlayEcoLoss();
             SoundManager.Instance.PlayLoseSound(multiplier);
-            Debug.Log("Perte ÉCOLOGIE : " + (ecoLoss * multiplier * gainMult) + " éco !");
+            Debug.Log("Perte ÉCOLOGIE : " + loss + " éco !");
         }
     }
 
@@ -198,22 +212,25 @@ public class SlotGameManager2 : MonoBehaviour
     {
         if (currentEcology >= startingEcology)
         {
-            return; //On peut pas acheter d'éco si on est déjà full
+            return;
         }
         if (currentMoney >= ecologyCost)
         {
-            // SON : Achat
             SoundManager.Instance.PlayBuyButton();
 
             currentMoney -= ecologyCost;
 
-            // SON : Perte d'argent
+            // TEXTE FLOTTANT : -X$ en jaune (perte d'argent)
+            FloatingTextManager.Instance.ShowMoneyLoss(ecologyCost, moneyTextPosition);
+
             SoundManager.Instance.PlayMoneyLoss();
 
             currentEcology += ecoGain;
             currentEcology = Mathf.Min(currentEcology, startingEcology);
 
-            // SON : Gain d'écologie
+            // TEXTE FLOTTANT : +X en vert (gain d'écologie)
+            FloatingTextManager.Instance.ShowEcoGain(ecoGain, ecoBarPosition);
+
             SoundManager.Instance.PlayEcoGain();
 
             ecologyCost += ecologyCost / 2;
@@ -226,12 +243,14 @@ public class SlotGameManager2 : MonoBehaviour
     {
         if (currentMoney >= industryCost)
         {
-            // SON : Achat
             SoundManager.Instance.PlayBuyButton();
 
             currentMoney -= industryCost;
 
-            // SON : Perte d'argent
+            // TEXTE FLOTTANT : -X$ en jaune (perte d'argent)
+            FloatingTextManager.Instance.ShowMoneyLoss(industryCost, moneyTextPosition);
+            FloatingTextManager.Instance.ShowMultGain(multiPosition);
+
             SoundManager.Instance.PlayMoneyLoss();
 
             gainMult++;
@@ -251,22 +270,20 @@ public class SlotGameManager2 : MonoBehaviour
         spinCountText.text = "Tirages : " + spinCount;
         MultText.text = "Mult : " + gainMult;
 
-        // IMPORTANT : Mettre à jour la musique en fonction de l'écologie
         SoundManager.Instance.UpdateMusicBasedOnEcology(currentEcology, startingEcology);
 
         if (currentEcology <= 0)
         {
             endScreen.SetActive(true);
             finalSpinCountText.text = "Vous avez survécu " + spinCount + " tirages !";
-            // SON : Game Over
             SoundManager.Instance.PlayGameOverMusic();
-            SoundManager.Instance.StopAllSounds(); // Arrêter les autres sons
+            SoundManager.Instance.StopAllSounds();
         }
     }
 
     void RestartGame()
     {
-        SoundManager.Instance.PlayBackgroundMusic(); //Pour relancer la musique de fond quand on restart
+        SoundManager.Instance.PlayBackgroundMusic();
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
     }
