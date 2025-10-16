@@ -132,10 +132,10 @@ public class SlotGameManager2 : MonoBehaviour
         // Fonction pour convertir un symbole en catégorie
         int GetCategory(int symbol)
         {
-            if (symbol >= 1 && symbol <= 3) return 1; // Catégorie Bas (1, 2, 3)
-            if (symbol >= 4 && symbol <= 5) return 2; // Catégorie Moyen (4, 5)
-            if (symbol == 6) return 3; // Catégorie Haut (6)
-            if (symbol >= 7 && symbol <= 8) return 4; // Catégorie Écologie (7, 8)
+            if (symbol == 1 || symbol == 4 || symbol == 7) return 1; // Catégorie Bas
+            if (symbol == 2 || symbol == 5) return 2; // Catégorie Moyen
+            if (symbol == 8) return 3; // Catégorie Haut
+            if (symbol == 3 || symbol == 6) return 4; // Catégorie Écologie
             return 0; // Symbole invalide
         }
 
@@ -165,28 +165,28 @@ public class SlotGameManager2 : MonoBehaviour
         int multiplier = sameCount == 2 ? 2 : 4;
 
         // Application des gains/pertes selon la catégorie
-        if (mainCategory == 1) // Catégorie BAS (1, 2, 3)
+        if (mainCategory == 1) // Catégorie BAS
         {
             currentMoney += gainLow * multiplier * gainMult;
             SoundManager.Instance.PlayMoneyGain();
             SoundManager.Instance.PlayWinSound(multiplier);
             Debug.Log("Gain BAS : " + (gainLow * multiplier * gainMult) + "$");
         }
-        else if (mainCategory == 2) // Catégorie MOYEN (4, 5)
+        else if (mainCategory == 2) // Catégorie MOYEN
         {
             currentMoney += gainMedium * multiplier * gainMult;
             SoundManager.Instance.PlayMoneyGain();
             SoundManager.Instance.PlayWinSound(multiplier);
             Debug.Log("Gain MOYEN : " + (gainMedium * multiplier * gainMult) + "$");
         }
-        else if (mainCategory == 3) // Catégorie HAUT (6)
+        else if (mainCategory == 3) // Catégorie HAUT
         {
             currentMoney += gainHigh * multiplier * gainMult;
             SoundManager.Instance.PlayMoneyGain();
             SoundManager.Instance.PlayWinSound(multiplier);
             Debug.Log("Gain HAUT : " + (gainHigh * multiplier * gainMult) + "$");
         }
-        else if (mainCategory == 4) // Catégorie ÉCOLOGIE (7, 8)
+        else if (mainCategory == 4) // Catégorie ÉCOLOGIE
         {
             currentEcology -= ecoLoss * multiplier * gainMult;
             currentEcology = Mathf.Max(0, currentEcology);
