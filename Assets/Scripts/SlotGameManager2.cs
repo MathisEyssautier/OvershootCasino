@@ -321,8 +321,8 @@ public class SlotGameManager2 : MonoBehaviour
 
      void UpdateJauge()
     {
-        float t = Mathf.Clamp01(currentEcology / 365f);
 
+        float t = Mathf.Clamp01(currentEcology / 365f);
         // On envoie la valeur au shader
         JaugeRenderer.material.SetFloat(shaderProperty, t);
     }
