@@ -62,6 +62,9 @@ public class SlotGameManager2 : MonoBehaviour
     [Header("Texts")]
     [SerializeField] private TMPro.TextMeshProUGUI InfoText;
     [SerializeField] private TMPro.TextMeshProUGUI CalculScoreText;
+    [SerializeField] private TMPro.TextMeshProUGUI EnergyText;
+    [SerializeField] private Renderer JaugeRenderer;
+    [SerializeField] private string shaderProperty = "_t";
 
 
     void Start()
@@ -283,7 +286,7 @@ public class SlotGameManager2 : MonoBehaviour
         spinCostText.text = "Coût : " + spinCost + " Eco ";
         spinCountText.text = "Tirages : " + spinCount;
         MultText.text = "x " + gainMult;
-
+        UpdateJauge();
         SoundManager.Instance.UpdateMusicBasedOnEcology(currentEcology, startingEcology);
 
         if (currentEcology <= 0)
@@ -293,6 +296,14 @@ public class SlotGameManager2 : MonoBehaviour
             SoundManager.Instance.PlayGameOverMusic();
             SoundManager.Instance.StopAllSounds();
         }
+    }
+
+     void UpdateJauge()
+    {
+        float t = Mathf.Clamp01(currentEcology / 365f);
+
+        // On envoie la valeur au shader
+        JaugeRenderer.material.SetFloat(shaderProperty, t);
     }
 
     void RestartGame()
