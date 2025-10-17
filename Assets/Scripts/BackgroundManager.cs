@@ -107,8 +107,6 @@ public class BackgroundManager : MonoBehaviour
     
     void Update()
     {
-        T += Time.deltaTime/10;
-        
         _skyboxMaterial.SetColor("_SkyColor", Color.Lerp(_skyColorStart, _skyColorEnd, T));
         _skyboxMaterial.SetColor("_HorizonColor", Color.Lerp(_horizonColorStart, _horizonColorEnd, T));
         _skyboxMaterial.SetColor("_SunColorOne", Color.Lerp(_sunColorStart1, _sunColorEnd1, T));
