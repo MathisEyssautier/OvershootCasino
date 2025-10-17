@@ -154,6 +154,53 @@ RectTransform:
   m_AnchoredPosition: {x: -122, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &43984519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 43984521}
+  - component: {fileID: 43984520}
+  m_Layer: 0
+  m_Name: CameraController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &43984520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43984519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a262f7193e55e3944b0e7dd0d87ff6f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  camStart: {fileID: 1306698816}
+  camGame: {fileID: 2078648407}
+  transitionDelay: 16
+--- !u!4 &43984521
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43984519}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.14329, y: 3.39489, z: 0.61344}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &94485880
 GameObject:
   m_ObjectHideFlags: 0
@@ -771,13 +818,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 689362196}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19177614, y: 0, z: 0, w: 0.98143876}
+  m_LocalRotation: {x: 0.13560674, y: -0.6939819, z: 0.13560674, w: 0.6939819}
   m_LocalPosition: {x: 0, y: 16, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 22.113, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 22.113, y: -90, z: 0}
 --- !u!1 &696372122
 GameObject:
   m_ObjectHideFlags: 0
@@ -1592,7 +1639,7 @@ GameObject:
   - component: {fileID: 1306698817}
   - component: {fileID: 1306698816}
   m_Layer: 0
-  m_Name: CinemachineCamera
+  m_Name: CinemachineCameraStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1612,7 +1659,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
   Priority:
     Enabled: 1
-    m_Value: 30
+    m_Value: 10
   OutputChannel: 1
   StandbyUpdate: 2
   m_StreamingVersion: 20241001
@@ -1649,8 +1696,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1306698815}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.9947744, z: 0.102098145, w: 0}
-  m_LocalPosition: {x: 0, y: 44.3, z: 52.33}
+  m_LocalRotation: {x: -0.047693465, y: 0.7054966, z: 0.047693476, w: 0.7054965}
+  m_LocalPosition: {x: -41.557045, y: 42.0943, z: -1.266781}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3301,11 +3348,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1530329208749206866, guid: 6e3087f73c7bac94ab02ae448b1ee3cd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1530329208749206866, guid: 6e3087f73c7bac94ab02ae448b1ee3cd, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1530329208749206866, guid: 6e3087f73c7bac94ab02ae448b1ee3cd, type: 3}
       propertyPath: m_LocalRotation.x
@@ -3313,7 +3360,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1530329208749206866, guid: 6e3087f73c7bac94ab02ae448b1ee3cd, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1530329208749206866, guid: 6e3087f73c7bac94ab02ae448b1ee3cd, type: 3}
       propertyPath: m_LocalRotation.z
@@ -3325,7 +3372,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1530329208749206866, guid: 6e3087f73c7bac94ab02ae448b1ee3cd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1530329208749206866, guid: 6e3087f73c7bac94ab02ae448b1ee3cd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -3725,7 +3772,7 @@ GameObject:
   - component: {fileID: 2078648408}
   - component: {fileID: 2078648407}
   m_Layer: 0
-  m_Name: CinemachineCamera (1)
+  m_Name: CinemachineCameraGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3745,7 +3792,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
   Priority:
     Enabled: 1
-    m_Value: 40
+    m_Value: 0
   OutputChannel: 1
   StandbyUpdate: 2
   m_StreamingVersion: 20241001
@@ -3782,13 +3829,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2078648406}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.99998194, z: 0.0060212873, w: 0}
-  m_LocalPosition: {x: 0, y: 2.9, z: 4.68}
+  m_LocalRotation: {x: 0.01061318, y: 0.70702714, z: -0.01061318, w: 0.70702714}
+  m_LocalPosition: {x: -4.8, y: 3.26, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -0.69, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 1.72, y: 90, z: 0}
 --- !u!1 &2116719606
 GameObject:
   m_ObjectHideFlags: 0
@@ -4012,8 +4059,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2116952795}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.99998194, z: 0.0060212873, w: 0}
-  m_LocalPosition: {x: 0, y: 2.9, z: 4.68}
+  m_LocalRotation: {x: -0.047693465, y: 0.7054966, z: 0.047693476, w: 0.7054965}
+  m_LocalPosition: {x: -41.557045, y: 42.0943, z: -1.266781}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4087,7 +4134,7 @@ MonoBehaviour:
     DefaultMode: 2
   DefaultBlend:
     Style: 1
-    Time: 2
+    Time: 16
     CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -4456,7 +4503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7446140685667061935, guid: 5db6a1ba90cb31d4da81be05878300e7, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7446140685667061935, guid: 5db6a1ba90cb31d4da81be05878300e7, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4464,7 +4511,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7446140685667061935, guid: 5db6a1ba90cb31d4da81be05878300e7, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7446140685667061935, guid: 5db6a1ba90cb31d4da81be05878300e7, type: 3}
       propertyPath: m_LocalRotation.z
@@ -4476,7 +4523,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7446140685667061935, guid: 5db6a1ba90cb31d4da81be05878300e7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7446140685667061935, guid: 5db6a1ba90cb31d4da81be05878300e7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -4552,3 +4599,4 @@ SceneRoots:
   - {fileID: 689362200}
   - {fileID: 1306698817}
   - {fileID: 2078648408}
+  - {fileID: 43984521}

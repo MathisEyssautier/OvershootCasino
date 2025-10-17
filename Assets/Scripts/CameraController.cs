@@ -22,5 +22,6 @@ public class CameraController : MonoBehaviour
         camStart.Priority = 0;
         camGame.Priority = 10;
         yield return new WaitForSeconds(transitionDelay);
+        
     }
 }
