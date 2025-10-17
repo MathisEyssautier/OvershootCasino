@@ -83,9 +83,11 @@ public class SlotGameManager2 : MonoBehaviour
     private int jaugeMult = 1;
     private int previousJaugeBonus = 1; // Pour détecter les changements de zone
 
+    
     void Start()
     {
         endScreen.SetActive(false);
+        gameEnded = false;
         currentMoney = startingMoney;
         currentEcology = startingEcology;
         InfoText.text = "";
@@ -94,6 +96,15 @@ public class SlotGameManager2 : MonoBehaviour
         UpdateUI();
 
         restartButton.onClick.AddListener(RestartGame);
+    }
+
+    private void Update()
+    {
+        if (currentEcology <= 0)
+        {
+            EndGame();
+            gameEnded = true;
+        }
     }
 
     public void StartSpin()

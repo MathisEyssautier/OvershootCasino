@@ -16,13 +16,13 @@ public class Sign : MonoBehaviour
     }
     
     public void ToggleLogo() {
-        if (_isOn) {
+        //if (_isOn) {
             _logoMaterial.SetTexture("_EmissionMap", offTexture);
             _isOn = false;
-        }
-        else {
-            _logoMaterial.SetTexture("_EmissionMap", onTexture);
-            _isOn = true;
-        }
+        //}
+        //else {
+        //    _logoMaterial.SetTexture("_EmissionMap", onTexture);
+        //    _isOn = true;
+        //}
     }
 }
