@@ -163,10 +163,15 @@ MonoBehaviour:
   sky: {fileID: 0}
   maxHeight: 50
   sunTextures:
-  - {fileID: 2800000, guid: 7186a0716bf665e4abebd572978662db, type: 3}
-  - {fileID: 2800000, guid: 2da019ef181a5cb49b3fac586c5a2b5d, type: 3}
-  - {fileID: 2800000, guid: f5ee4c28c7a4dce41b63b8c6fec6f6b5, type: 3}
-  - {fileID: 2800000, guid: c13c92e3ffc542240b70f0c39ca2be5f, type: 3}
+  - {fileID: 2800000, guid: 2ebc53c512feafd43b3141673502427d, type: 3}
+  - {fileID: 2800000, guid: 337ad1ea1bee44d48a23f2183e5ff42a, type: 3}
+  - {fileID: 2800000, guid: 9d845c8d833139e4290bb93f0ab660a7, type: 3}
+  - {fileID: 2800000, guid: 717f64f2760003a4ba48386adf322ddd, type: 3}
+  - {fileID: 2800000, guid: a7381b59cc01d804894a93d5bfe75157, type: 3}
+  - {fileID: 2800000, guid: 54e8b5cad169ec24cbebec80d628e789, type: 3}
+  - {fileID: 2800000, guid: 7417e58df65e5f84cb6fd3104c00bd2a, type: 3}
+  - {fileID: 2800000, guid: 00cdd63be6413e849ba7087df7e9e6b1, type: 3}
+  - {fileID: 2800000, guid: 853817d2ad1091e4695a6eb950981b8f, type: 3}
   T: 0
 --- !u!1 &308144618600505896
 GameObject:

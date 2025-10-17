@@ -37,7 +37,7 @@ public class BackgroundManager : MonoBehaviour
     {
         _skyboxMaterial = RenderSettings.skybox;
 
-        var coroutine = UpdateSun(0.05f);
+        var coroutine = UpdateSun(0.04f);
         StartCoroutine(coroutine);
 
         _skyColorStart = _skyboxMaterial.GetColor("_SkyColor");
@@ -114,7 +114,7 @@ public class BackgroundManager : MonoBehaviour
         while (true) {
             _skyboxMaterial.SetTexture("_SunMask", sunTextures[i]);
             i++;
-            if (i > 3) i = 0;
+            if (i > sunTextures.Length - 1) i = 0;
             yield return new WaitForSeconds(waitTime);
         }
     }
