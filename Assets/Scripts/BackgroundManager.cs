@@ -13,6 +13,8 @@ public class BackgroundManager : MonoBehaviour
     [SerializeField] Image sky;
     [SerializeField] private float maxHeight = 3f;
     [SerializeField] private Texture2D[] sunTextures;
+    [SerializeField] private MeshRenderer grid;
+    
 
     public float T = 0;
     
@@ -26,27 +28,46 @@ public class BackgroundManager : MonoBehaviour
     private List<GameObject> _buildings = new();
     private List<GameObject> _trees = new();
     
-    private Color _skyColorStart;
-    private Color _horizonColorStart;
-    private Color _sunColorStart1;
-    private Color _sunColorStart2;
+    [SerializeField] private Color _skyColorStart;
+    [SerializeField] private Color _horizonColorStart;
+    [SerializeField] private Color _sunColorStart1;
+    [SerializeField] private Color _sunColorStart2;
+    
+    [SerializeField] private Color gridColorStart;
+    [SerializeField] private Color groundColorStart;
+    
+    private Color _skyColorEnd;
+    private Color _horizonColorEnd;
+    private Color _sunColorEnd1;
+    private Color _sunColorEnd2;
+    
+    private Color _gridColorEnd;
+    private Color _groundColorEnd;
     
     private Material _skyboxMaterial;
+    private Material _gridMaterial;
     
     void Start()
     {
         _skyboxMaterial = RenderSettings.skybox;
+        _gridMaterial = grid.material;
 
         var coroutine = UpdateSun(0.04f);
         StartCoroutine(coroutine);
-
-        _skyColorStart = _skyboxMaterial.GetColor("_SkyColor");
-        _horizonColorStart = _skyboxMaterial.GetColor("_HorizonColor");
-        _sunColorStart1 = _skyboxMaterial.GetColor("_SunColorOne");
-        _sunColorStart2 = _skyboxMaterial.GetColor("_SunColorTwo");
-
         
+        _skyboxMaterial.SetColor("_SkyColor", _skyColorStart);
+        _skyboxMaterial.SetColor("_HorizonColor", _horizonColorStart);
+        _skyboxMaterial.SetColor("_SunColorOne", _sunColorStart1);
+        _skyboxMaterial.SetColor("_SunColorTwo", _sunColorStart2);
+        
+        _skyColorEnd = new Color(_skyColorStart.grayscale, _skyColorStart.grayscale, _skyColorStart.grayscale);
+        _horizonColorEnd = new Color(_horizonColorStart.grayscale, _horizonColorStart.grayscale, _horizonColorStart.grayscale);
+        _sunColorEnd1 = new Color(_sunColorStart1.grayscale, _sunColorStart1.grayscale, _sunColorStart1.grayscale);
+        _sunColorEnd2 = new Color(_sunColorStart2.grayscale, _sunColorStart2.grayscale, _sunColorStart2.grayscale);
 
+        _gridColorEnd = new Color(gridColorStart.grayscale, gridColorStart.grayscale, gridColorStart.grayscale);
+        _groundColorEnd = new Color(groundColorStart.grayscale, groundColorStart.grayscale, groundColorStart.grayscale);
+        
         for (int i = 0; i < buildingsContainer.transform.childCount; i++)
         {
             _buildings.Add(buildingsContainer.transform.GetChild(i).gameObject);
@@ -86,9 +107,13 @@ public class BackgroundManager : MonoBehaviour
     
     void Update()
     {
-        T += Time.deltaTime/10;
-        
-        
+        _skyboxMaterial.SetColor("_SkyColor", Color.Lerp(_skyColorStart, _skyColorEnd, T));
+        _skyboxMaterial.SetColor("_HorizonColor", Color.Lerp(_horizonColorStart, _horizonColorEnd, T));
+        _skyboxMaterial.SetColor("_SunColorOne", Color.Lerp(_sunColorStart1, _sunColorEnd1, T));
+        _skyboxMaterial.SetColor("_SunColorTwo", Color.Lerp(_sunColorStart2, _sunColorEnd2, T));
+
+        _gridMaterial.SetColor("_GridColor", Color.Lerp(gridColorStart, _gridColorEnd, T));
+        _gridMaterial.SetColor("_GroundColor", Color.Lerp(groundColorStart, _groundColorEnd, T));
         
         for (int i = 0; i < _buildings.Count; i++)
         {

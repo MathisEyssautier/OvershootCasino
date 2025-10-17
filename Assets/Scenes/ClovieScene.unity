@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
+  m_Sun: {fileID: 692180606}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -94,7 +94,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 1041646aba3fd1e4d962cfad7939e9c4, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: a5dbf60cc3989d44fabbde6b656101a8, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -523,6 +523,7 @@ GameObject:
   - component: {fileID: 692180607}
   - component: {fileID: 692180606}
   - component: {fileID: 692180608}
+  - component: {fileID: 692180609}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -580,7 +581,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -603,8 +604,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 692180605}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19177689, y: 0, z: 0, w: 0.9814386}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.19177614, y: 0, z: 0, w: 0.98143876}
+  m_LocalPosition: {x: 0, y: 16, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -639,6 +640,18 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &692180609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692180605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca35da6633965f44388c40d56c83fade, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GetGlobalMatrixLite
 --- !u!1 &696372122
 GameObject:
   m_ObjectHideFlags: 0
@@ -3572,15 +3585,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7446140685667061935, guid: 5db6a1ba90cb31d4da81be05878300e7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.724999
+      value: -7.7249994
       objectReference: {fileID: 0}
     - target: {fileID: 7446140685667061935, guid: 5db6a1ba90cb31d4da81be05878300e7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -20.784992
+      value: -20.234993
       objectReference: {fileID: 0}
     - target: {fileID: 7446140685667061935, guid: 5db6a1ba90cb31d4da81be05878300e7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -14.475
+      value: -5.625
       objectReference: {fileID: 0}
     - target: {fileID: 7446140685667061935, guid: 5db6a1ba90cb31d4da81be05878300e7, type: 3}
       propertyPath: m_LocalRotation.w
