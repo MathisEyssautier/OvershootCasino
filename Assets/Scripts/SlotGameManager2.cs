@@ -83,6 +83,8 @@ public class SlotGameManager2 : MonoBehaviour
         currentMoney = startingMoney;
         currentEcology = startingEcology;
         InfoText.text = "";
+        EndText2Object.SetActive(false);
+        EndTextObject.SetActive(false);
         UpdateUI();
 
         restartButton.onClick.AddListener(RestartGame);
@@ -96,9 +98,10 @@ public class SlotGameManager2 : MonoBehaviour
         {
             resultText.text = "Pas assez de jours !";
             SoundManager.Instance.PlayMoneyLoss();
+            EndGame();
             return;
         }
-        else { EndGame(); };
+        
 
             SoundManager.Instance.PlaySpinButton();
 
