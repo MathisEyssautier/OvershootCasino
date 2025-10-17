@@ -51,7 +51,6 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip moneyLossSound;
     [SerializeField] private AudioClip ecoGainSound;
     [SerializeField] private AudioClip ecoLossSound;
-    [SerializeField] private AudioClip criticalWarningSound; // Quand écologie devient critique
     [SerializeField] private AudioClip energyBoostSound; // Quand on entre en zone haute d'énergie
     [SerializeField] private AudioClip criticalBoostSound; // Quand on entre en zone critique d'énergie
 
@@ -178,7 +177,6 @@ public class SoundManager : MonoBehaviour
             if (!isCritical)
             {
                 isCritical = true;
-                PlaySound(feedbackSource, criticalWarningSound);
             }
         }
         else

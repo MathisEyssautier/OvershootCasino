@@ -42,9 +42,16 @@ public class SlotGameManager2 : MonoBehaviour
     private int currentEcology;
     private bool isSpinning = false;
     private int spinCount = 0;
+    private bool gameEnded = false;
 
     [Header("End")]
     [SerializeField] GameObject endScreen;
+    [SerializeField] GameObject InfoTextObject;
+    [SerializeField] GameObject MultTextObject;
+    [SerializeField] GameObject EndText2Object;
+    [SerializeField] GameObject EndTextObject;
+    [SerializeField] GameObject ComboTextObject;
+    [SerializeField] GameObject MoneyTextObject;
     [SerializeField] Button restartButton;
     [SerializeField] TextMeshProUGUI finalSpinCountText;
 
@@ -63,6 +70,9 @@ public class SlotGameManager2 : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI EnergyText;
     [SerializeField] private Renderer JaugeRenderer;
     [SerializeField] private string shaderProperty = "_t";
+    [SerializeField] private TMPro.TextMeshProUGUI EndText;
+    [SerializeField] private TMPro.TextMeshProUGUI EndText2;
+
 
     private int jaugeMult = 1;
     private int previousJaugeBonus = 1; // Pour détecter les changements de zone
@@ -80,6 +90,7 @@ public class SlotGameManager2 : MonoBehaviour
 
     public void StartSpin()
     {
+        if (gameEnded) { RestartGame(); }
         if (isSpinning) return;
         if (currentEcology < spinCost)
         {
@@ -87,8 +98,9 @@ public class SlotGameManager2 : MonoBehaviour
             SoundManager.Instance.PlayMoneyLoss();
             return;
         }
+        else { EndGame(); };
 
-        SoundManager.Instance.PlaySpinButton();
+            SoundManager.Instance.PlaySpinButton();
 
         currentEcology -= spinCost;
         spinCount++;
@@ -278,13 +290,27 @@ public class SlotGameManager2 : MonoBehaviour
 
         if (currentEcology <= 0)
         {
-            endScreen.SetActive(true);
-            finalSpinCountText.text = "Vous avez survécu " + spinCount + " tirages !";
-            SoundManager.Instance.PlayGameOverMusic();
-            SoundManager.Instance.StopAllSounds();
+            EndGame();
         }
     }
 
+
+    void EndGame()
+    {
+        endScreen.SetActive(false);
+        EnergyText.text = "GAME OVER";
+        EndText.text = "You survived " + spinCount + " draws\n before draining the planet";
+        MultTextObject.SetActive(false);
+        InfoTextObject.SetActive(false);
+        ComboTextObject.SetActive(false);
+        MoneyTextObject.SetActive(false);
+        EndTextObject.SetActive(true);
+        EndText2Object.SetActive(true);
+        gameEnded = true;
+
+        SoundManager.Instance.PlayGameOverMusic();
+        SoundManager.Instance.StopAllSounds();
+    }
     void CheckJaugeBonus()
     {
         if (currentEcology >= 330)
