@@ -2815,7 +2815,7 @@ MonoBehaviour:
   musicSource: {fileID: 1500434718}
   backgroundMusic: {fileID: 8300000, guid: 4cafe90c34e63114aa7ad970af837efb, type: 3}
   introMusic: {fileID: 8300000, guid: 5e919db6f29c72a4cabf32d69540eef1, type: 3}
-  gameOverMusic: {fileID: 8300000, guid: 5febb1142c2954048a49d6c8721d7138, type: 3}
+  gameOverMusic: {fileID: 8300000, guid: 2c13debde75c6694aa60e44ec252f90e, type: 3}
   victoryMusic: {fileID: 8300000, guid: 297f82160b03b514995474805b672a84, type: 3}
   wheelSource: {fileID: 1500434717}
   wheelSpinSound: {fileID: 8300000, guid: 68419db9edfcddb48946363053b626b5, type: 3}
@@ -3043,6 +3043,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8508081296368804287, guid: ce57f8901b6c4d9429c4a14801c1f201, type: 3}
   m_PrefabInstance: {fileID: 1231708263}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1580887204 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6101905873152929777, guid: ce57f8901b6c4d9429c4a14801c1f201, type: 3}
+  m_PrefabInstance: {fileID: 1231708263}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580887203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cff4f27ab741cb34da70b1bc862647ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Sign
 --- !u!1 &1649592988 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9051155680303535071, guid: 5db6a1ba90cb31d4da81be05878300e7, type: 3}
@@ -4389,6 +4400,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8893479612412787907, guid: 83b8115316a775244a752e99b88cba22, type: 3}
+      propertyPath: sign
+      value: 
+      objectReference: {fileID: 1580887204}
     - target: {fileID: 8893479612412787907, guid: 83b8115316a775244a752e99b88cba22, type: 3}
       propertyPath: wheel1
       value: 

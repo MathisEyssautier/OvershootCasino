@@ -329,8 +329,9 @@ public class SlotGameManager2 : MonoBehaviour
         EndText2Object.SetActive(true);
         gameEnded = true;
 
-        SoundManager.Instance.PlayGameOverMusic();
+        
         SoundManager.Instance.StopAllSounds();
+        SoundManager.Instance.PlayGameOverMusic();
     }
     void CheckJaugeBonus()
     {

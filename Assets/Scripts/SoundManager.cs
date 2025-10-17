@@ -139,6 +139,12 @@ public class SoundManager : MonoBehaviour
             musicSource.loop = false;
             musicSource.volume = 0.7f;
             musicSource.pitch = 1f;
+
+            if (useLowPassFilter && lowPassFilter != null)
+            {
+                lowPassFilter.cutoffFrequency = normalCutoffFreq;
+            }
+
             musicSource.Play();
         }
     }
