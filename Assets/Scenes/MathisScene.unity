@@ -3297,7 +3297,7 @@ MonoBehaviour:
   gameOverMusic: {fileID: 8300000, guid: 5febb1142c2954048a49d6c8721d7138, type: 3}
   victoryMusic: {fileID: 8300000, guid: 297f82160b03b514995474805b672a84, type: 3}
   wheelSource: {fileID: 1500434717}
-  wheelSpinSound: {fileID: 8300000, guid: 4adf9b41acb74ac49af44a2907bf30f0, type: 3}
+  wheelSpinSound: {fileID: 8300000, guid: 68419db9edfcddb48946363053b626b5, type: 3}
   wheelStopSound: {fileID: 8300000, guid: 1a7a3f5e23da41b44b068f0b33a21bf4, type: 3}
   resultSource: {fileID: 1500434716}
   winLowX2Sound: {fileID: 8300000, guid: 4aeeabc12ccfd8d458ede49e103a0066, type: 3}
@@ -3319,7 +3319,6 @@ MonoBehaviour:
   moneyLossSound: {fileID: 8300000, guid: e53787216bd92a445b5b180caefee35f, type: 3}
   ecoGainSound: {fileID: 8300000, guid: 92626be7b3a1dea4189546ab016fc432, type: 3}
   ecoLossSound: {fileID: 8300000, guid: 7d99f340a0ec4f441b9ccba917284e74, type: 3}
-  criticalWarningSound: {fileID: 8300000, guid: e157f65a6860a0242ac3a3156ae1c848, type: 3}
   energyBoostSound: {fileID: 8300000, guid: d71e30a1f14e3a54c802a18144e1e512, type: 3}
   criticalBoostSound: {fileID: 8300000, guid: baa9b18567c4c9447aaa53b2caa40fa2, type: 3}
   normalPitch: 1
