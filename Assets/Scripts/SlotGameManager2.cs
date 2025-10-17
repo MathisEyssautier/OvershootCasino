@@ -74,6 +74,11 @@ public class SlotGameManager2 : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI EndText2;
 
 
+    [Header("Background")]
+    [SerializeField] private BackgroundManager BackgroundManager;
+
+
+
     private int jaugeMult = 1;
     private int previousJaugeBonus = 1; // Pour détecter les changements de zone
 
@@ -333,6 +338,7 @@ public class SlotGameManager2 : MonoBehaviour
     void UpdateJauge()
     {
         float t = Mathf.Clamp01(currentEcology / 365f);
+        BackgroundManager.T = 1- t;
         JaugeRenderer.material.SetFloat(shaderProperty, t);
 
         int currentBonus = 1; // Valeur par défaut (zone normale)
