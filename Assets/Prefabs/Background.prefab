@@ -172,7 +172,14 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 7417e58df65e5f84cb6fd3104c00bd2a, type: 3}
   - {fileID: 2800000, guid: 00cdd63be6413e849ba7087df7e9e6b1, type: 3}
   - {fileID: 2800000, guid: 853817d2ad1091e4695a6eb950981b8f, type: 3}
+  grid: {fileID: 5854424147132573095}
   T: 0
+  _skyColorStart: {r: 0.05490196, g: 0.21568628, b: 0.3019608, a: 1}
+  _horizonColorStart: {r: 0.9137255, g: 0.45490196, b: 0.3137255, a: 1}
+  _sunColorStart1: {r: 1, g: 0.92941177, b: 0.07450981, a: 0.98039216}
+  _sunColorStart2: {r: 0.92156863, g: 0.12156863, b: 0.1254902, a: 1}
+  gridColorStart: {r: 1, g: 0.39215687, b: 0.83137256, a: 1}
+  groundColorStart: {r: 0.12156863, g: 0.2901961, b: 0.36862746, a: 1}
 --- !u!1 &308144618600505896
 GameObject:
   m_ObjectHideFlags: 0
