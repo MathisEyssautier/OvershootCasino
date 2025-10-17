@@ -76,6 +76,7 @@ public class SlotGameManager2 : MonoBehaviour
 
     [Header("Background")]
     [SerializeField] private BackgroundManager BackgroundManager;
+    [SerializeField] private Sign sign;
 
 
 
@@ -306,6 +307,7 @@ public class SlotGameManager2 : MonoBehaviour
     void EndGame()
     {
         endScreen.SetActive(false);
+        sign.ToggleLogo();
         EnergyText.text = "GAME OVER";
         EndText.text = "You survived " + spinCount + " draws\n before draining the planet";
         MultTextObject.SetActive(false);
