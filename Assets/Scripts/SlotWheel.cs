@@ -34,10 +34,10 @@ public class SlotWheel : MonoBehaviour
     {
         isSpinning = true;
 
-        // On r�cup�re la rotation de d�part
+        // On r�cup�re la rotation de départ
         float startRotation = cylinderTransform.localEulerAngles.z;
 
-        // Calcul des degr�s par symbole (360� divis� par 8 symboles = 45�)
+        // Calcul des degr�s par symbole (360degrés divisé par 8 symboles = 45degrés)
         float degreesPerSymbol = 360f / symbolCount;
 
         int randomSymbol = Random.Range(1, symbolCount + 1);
@@ -47,22 +47,22 @@ public class SlotWheel : MonoBehaviour
 
         float timeElapsed = 0f;
 
-        // Boucle d'animation qui tourne pendant toute la dur�e d�finie
+        // Boucle d'animation qui tourne pendant toute la durée définie
         while (timeElapsed < spinDuration)
         {
             // On avance le temps
             timeElapsed += Time.deltaTime;
 
-            // Calcul du pourcentage de progression (0 � 1) pour la ligne suivante
+            // Calcul du pourcentage de progression (0 à 1) pour la ligne suivante
             float progress = timeElapsed / spinDuration;
 
-            // Cette formule fait ralentir la roue � la fin
+            // Cette formule fait ralentir la roue à la fin
             float easedProgress = 1f - Mathf.Pow(1f - progress, 3f);
 
-            // Interpolation entre la rotation de d�part et la rotation finale --> de combien on doit tourner la roue
+            // Interpolation entre la rotation de depart et la rotation finale --> de combien on doit tourner la roue
             float currentRotation = Mathf.Lerp(startRotation, targetRotation, easedProgress);
 
-            // Application de la rotation au cylindre ( l� on fait vraiment rtourner la roue )
+            // Application de la rotation au cylindre ( là on fait vraiment rtourner la roue )
             cylinderTransform.localEulerAngles = new Vector3(0f, 0f, currentRotation);
 
             // On attend la prochaine frame
@@ -75,10 +75,10 @@ public class SlotWheel : MonoBehaviour
         // On stocke la rotation finale
         finalRotation = targetRotation;
 
-        // On calcule le symbole bas� sur la rotation finale
+        // On calcule le symbole basé sur la rotation finale
         // On prend le modulo pour obtenir la position entre 0 et 360
         float normalizedRotation = finalRotation % 360f;
-        // On divise par les degr�s par symbole et on arrondit
+        // On divise par les degrés par symbole et on arrondit
         finalSymbol = Mathf.FloorToInt(normalizedRotation / degreesPerSymbol) + 1;
 
         isSpinning = false;

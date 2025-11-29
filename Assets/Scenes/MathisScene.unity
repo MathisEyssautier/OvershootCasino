@@ -4445,6 +4445,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 707974733}
     - target: {fileID: 8893479612412787907, guid: 83b8115316a775244a752e99b88cba22, type: 3}
+      propertyPath: spinCost
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8893479612412787907, guid: 83b8115316a775244a752e99b88cba22, type: 3}
       propertyPath: endScreen
       value: 
       objectReference: {fileID: 1401030682}

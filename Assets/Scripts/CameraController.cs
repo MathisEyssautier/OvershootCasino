@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 using System.Collections;
 using Unity.Cinemachine;
 
@@ -9,24 +8,35 @@ public class CameraController : MonoBehaviour
     [SerializeField] private CinemachineCamera camGame;
     [SerializeField] private float transitionDelay = 0f;
     [SerializeField] private GameObject Sign;
-    [SerializeField] private float moveDuration = 2f; // durée du déplacement
+    [SerializeField] private float moveDuration = 2f;
     [SerializeField] private float targetY = 5f;
 
     private void Start()
     {
+        //On force la réinitialisation des priorités
         camStart.Priority = 10;
         camGame.Priority = 0;
+
+        StartCoroutine(StartSequence());
+    }
+
+    private IEnumerator StartSequence()
+    {
+        // Attend un frame pour que Cinemachine applique les priorités
+        yield return null;
+
+        // Lance le switch des caméras
         StartCoroutine(SwitchCameras());
     }
 
     private IEnumerator SwitchCameras()
     {
-        
-
-        // Change simplement la priorité — Cinemachine gère le blend automatiquement
+        // Change la priorité
         camStart.Priority = 0;
         camGame.Priority = 10;
+
         yield return new WaitForSeconds(transitionDelay);
+
         Sign.SetActive(true);
         StartCoroutine(MoveSignUp());
     }
@@ -39,14 +49,12 @@ public class CameraController : MonoBehaviour
 
         while (elapsed < moveDuration)
         {
-            // Interpolation fluide (EaseInOut)
             float t = Mathf.SmoothStep(0f, 1f, elapsed / moveDuration);
             Sign.transform.position = Vector3.Lerp(startPos, endPos, t);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // Assure la position finale exacte
         Sign.transform.position = endPos;
     }
 }

@@ -93,6 +93,19 @@ public class SlotGameManager2 : MonoBehaviour
         InfoText.text = "";
         EndText2Object.SetActive(false);
         EndTextObject.SetActive(false);
+
+        if (SoundManager.Instance != null)
+        {
+            GameObject comboObj = GameObject.Find("ComboText"); // Remplace par le bon nom
+            if (comboObj != null)
+            {
+                var comboText = comboObj.GetComponent<TextMeshProUGUI>();
+                if (comboText != null)
+                {
+                    comboText.text = "test";
+                }
+            }
+        }
         UpdateUI();
 
         restartButton.onClick.AddListener(RestartGame);
@@ -317,7 +330,6 @@ public class SlotGameManager2 : MonoBehaviour
 
     void EndGame()
     {
-        endScreen.SetActive(false);
         sign.ToggleLogo();
         EnergyText.text = "GAME OVER";
         EndText.text = "You survived " + spinCount + " draws\n before draining the planet";
@@ -390,7 +402,8 @@ public class SlotGameManager2 : MonoBehaviour
 
     void RestartGame()
     {
-        SoundManager.Instance.PlayBackgroundMusic();
+        StopAllCoroutines();
+
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
     }

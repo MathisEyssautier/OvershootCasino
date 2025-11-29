@@ -1,68 +1,68 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
-    // Instance Singleton pour accéder au SoundManager de partout
     public static SoundManager Instance { get; private set; }
 
     [Header("=== MUSIQUES ===")]
-    [SerializeField] private AudioSource musicSource; // Source pour la musique de fond
+    [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioClip backgroundMusic;
     [SerializeField] private AudioClip introMusic;
     [SerializeField] private AudioClip gameOverMusic;
     [SerializeField] private AudioClip victoryMusic;
 
     [Header("=== ROUES ===")]
-    [SerializeField] private AudioSource wheelSource; // Source dédiée aux roues
+    [SerializeField] private AudioSource wheelSource;
     [SerializeField] private AudioClip wheelSpinSound;
     [SerializeField] private AudioClip wheelStopSound;
 
     [Header("=== RÉSULTATS - CATÉGORIE BAS ===")]
-    [SerializeField] private AudioSource resultSource; // Source pour les résultats
-    [SerializeField] private AudioClip winLowX2Sound; // 2 symboles bas
-    [SerializeField] private AudioClip winLowX4Sound; // 3 symboles bas (jackpot)
+    [SerializeField] private AudioSource resultSource;
+    [SerializeField] private AudioClip winLowX2Sound;
+    [SerializeField] private AudioClip winLowX4Sound;
 
     [Header("=== RÉSULTATS - CATÉGORIE MOYEN ===")]
-    [SerializeField] private AudioClip winMediumX2Sound; // 2 symboles moyens
-    [SerializeField] private AudioClip winMediumX4Sound; // 3 symboles moyens (jackpot)
+    [SerializeField] private AudioClip winMediumX2Sound;
+    [SerializeField] private AudioClip winMediumX4Sound;
 
     [Header("=== RÉSULTATS - CATÉGORIE HAUT ===")]
-    [SerializeField] private AudioClip winHighX2Sound; // 2 symboles hauts
-    [SerializeField] private AudioClip winHighX4Sound; // 3 symboles hauts (jackpot)
+    [SerializeField] private AudioClip winHighX2Sound;
+    [SerializeField] private AudioClip winHighX4Sound;
 
     [Header("=== RÉSULTATS - CATÉGORIE ÉCOLOGIE (PERTES) ===")]
-    [SerializeField] private AudioClip loseEcoX2Sound; // 2 symboles écologie
-    [SerializeField] private AudioClip loseEcoX4Sound; // 3 symboles écologie (jackpot négatif)
+    [SerializeField] private AudioClip loseEcoX2Sound;
+    [SerializeField] private AudioClip loseEcoX4Sound;
 
     [Header("=== RÉSULTATS - AUCUN COMBO ===")]
-    [SerializeField] private AudioClip noCombo1Sound; // Son neutre 1
-    [SerializeField] private AudioClip noCombo2Sound; // Son neutre 2
-    [SerializeField] private AudioClip noCombo3Sound; // Son neutre 3
+    [SerializeField] private AudioClip noCombo1Sound;
+    [SerializeField] private AudioClip noCombo2Sound;
+    [SerializeField] private AudioClip noCombo3Sound;
 
     [Header("=== UI / BOUTONS ===")]
-    [SerializeField] private AudioSource uiSource; // Source pour l'UI
-    [SerializeField] private AudioClip spinButtonSound; // Clic tireuse
-    [SerializeField] private AudioClip buyButtonSound; // Achat (cha-ching)
+    [SerializeField] private AudioSource uiSource;
+    [SerializeField] private AudioClip spinButtonSound;
+    [SerializeField] private AudioClip buyButtonSound;
 
     [Header("=== FEEDBACK RESSOURCES ===")]
-    [SerializeField] private AudioSource feedbackSource; // Source pour feedback
+    [SerializeField] private AudioSource feedbackSource;
     [SerializeField] private AudioClip moneyGainSound;
     [SerializeField] private AudioClip moneyLossSound;
     [SerializeField] private AudioClip ecoGainSound;
     [SerializeField] private AudioClip ecoLossSound;
-    [SerializeField] private AudioClip energyBoostSound; // Quand on entre en zone haute d'énergie
-    [SerializeField] private AudioClip criticalBoostSound; // Quand on entre en zone critique d'énergie
+    [SerializeField] private AudioClip energyBoostSound;
+    [SerializeField] private AudioClip criticalBoostSound;
 
     [Header("=== PARAMÈTRES MUSIQUE ===")]
-    [SerializeField] private float normalPitch = 1f; // Pitch normal
-    [SerializeField] private float minPitch = 0.5f; // Pitch minimum (situation critique)
-    [SerializeField] private float normalVolume = 0.5f; // Volume normal
-    [SerializeField] private float maxVolume = 0.8f; // Volume maximum (situation critique)
-    [SerializeField] private float criticalEcoThreshold = 30f; // Seuil d'écologie critique (%)
-    [SerializeField] private bool useLowPassFilter = true; // Activer le filtre Low Pass
-    [SerializeField] private float normalCutoffFreq = 22000f; // Fréquence normale (pas de filtre)
-    [SerializeField] private float minCutoffFreq = 500f; // Fréquence minimum (son étouffé)
+    [SerializeField] private float normalPitch = 1f;
+    [SerializeField] private float minPitch = 0.5f;
+    [SerializeField] private float normalVolume = 0.5f;
+    [SerializeField] private float maxVolume = 0.8f;
+    [SerializeField] private float criticalEcoThreshold = 30f;
+    [SerializeField] private bool useLowPassFilter = true;
+    [SerializeField] private float normalCutoffFreq = 22000f;
+    [SerializeField] private float minCutoffFreq = 500f;
 
     private float currentEcoPercentage = 100f;
     private bool isCritical = false;
@@ -77,6 +77,7 @@ public class SoundManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
@@ -86,16 +87,104 @@ public class SoundManager : MonoBehaviour
 
     void Start()
     {
+        InitializeSoundManager();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("SoundManager - Scène rechargée");
+        StartCoroutine(InitAfterSceneLoad());
+    }
+
+    private IEnumerator InitAfterSceneLoad()
+    {
+        yield return null;
+        FindComboText();
+        InitializeSoundManager();
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void FindComboText()
+    {
+        GameObject comboObj = GameObject.Find("ComboText");
+        if (comboObj != null)
+        {
+            comboText = comboObj.GetComponent<TMPro.TextMeshProUGUI>();
+            Debug.Log($"ComboText trouvé: {comboText != null}");
+        }
+        else
+        {
+            Debug.LogWarning("GameObject ComboText introuvable!");
+        }
+    }
+
+    public void SetComboText(TMPro.TextMeshProUGUI text)
+    {
+        comboText = text;
+        if (comboText != null)
+        {
+            comboText.text = "";
+            Debug.Log("ComboText assigné manuellement");
+        }
+    }
+
+    private void InitializeSoundManager()
+    {
         if (useLowPassFilter && musicSource != null)
         {
-            lowPassFilter = musicSource.gameObject.AddComponent<AudioLowPassFilter>();
+            lowPassFilter = musicSource.gameObject.GetComponent<AudioLowPassFilter>();
+            if (lowPassFilter == null)
+            {
+                lowPassFilter = musicSource.gameObject.AddComponent<AudioLowPassFilter>();
+            }
             lowPassFilter.cutoffFrequency = normalCutoffFreq;
         }
-        comboText.text = "";
+
+        if (comboText != null)
+        {
+            comboText.text = "";
+            Debug.Log("ComboText réinitialisé");
+        }
+
+        isCritical = false;
+        currentEcoPercentage = 100f;
+
+        if (musicSource != null)
+        {
+            musicSource.pitch = normalPitch;
+            musicSource.volume = normalVolume;
+        }
+
+        StopAllCoroutines();
         StartCoroutine(PlayIntroThenLoop());
     }
 
-    // ==================== MUSIQUES ====================
+    public void ResetSoundManager()
+    {
+        StopAllSounds();
+        musicSource?.Stop();
+        StopAllCoroutines();
+
+        isCritical = false;
+        currentEcoPercentage = 100f;
+
+        if (musicSource != null)
+        {
+            musicSource.pitch = normalPitch;
+            musicSource.volume = normalVolume;
+        }
+
+        if (useLowPassFilter && lowPassFilter != null)
+        {
+            lowPassFilter.cutoffFrequency = normalCutoffFreq;
+        }
+
+        InitializeSoundManager();
+    }
 
     private IEnumerator PlayIntroThenLoop()
     {
@@ -199,8 +288,6 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    // ==================== ROUES ====================
-
     public void PlayWheelSpin()
     {
         PlaySound(wheelSource, wheelSpinSound);
@@ -211,69 +298,128 @@ public class SoundManager : MonoBehaviour
         PlaySound(wheelSource, wheelStopSound);
     }
 
-    // ==================== RÉSULTATS ====================
-
-    // Sons pour catégorie BAS
     public void PlayWinLowSound(int multiplier)
     {
         if (multiplier == 2)
         {
             PlaySound(resultSource, winLowX2Sound);
-            comboText.text = "COMBO";
+            if (comboText != null)
+            {
+                comboText.text = "COMBO";
+                Debug.Log("Texte mis à jour: COMBO");
+            }
+            else
+            {
+                Debug.LogWarning("comboText NULL!");
+                FindComboText();
+                if (comboText != null) comboText.text = "COMBO";
+            }
         }
         else if (multiplier == 4)
         {
             PlaySound(resultSource, winLowX4Sound);
-            comboText.text = "MONEY COMBO";
+            if (comboText != null)
+            {
+                comboText.text = "MONEY COMBO";
+            }
+            else
+            {
+                FindComboText();
+                if (comboText != null) comboText.text = "MONEY COMBO";
+            }
         }
     }
 
-    // Sons pour catégorie MOYEN
     public void PlayWinMediumSound(int multiplier)
     {
         if (multiplier == 2)
         {
             PlaySound(resultSource, winMediumX2Sound);
-            comboText.text = "GOLDEN COMBO";
+            if (comboText != null)
+            {
+                comboText.text = "GOLDEN COMBO";
+            }
+            else
+            {
+                FindComboText();
+                if (comboText != null) comboText.text = "GOLDEN COMBO";
+            }
         }
         else if (multiplier == 4)
         {
             PlaySound(resultSource, winMediumX4Sound);
-            comboText.text = "CASINO COMBO";
+            if (comboText != null)
+            {
+                comboText.text = "CASINO COMBO";
+            }
+            else
+            {
+                FindComboText();
+                if (comboText != null) comboText.text = "CASINO COMBO";
+            }
         }
     }
 
-    // Sons pour catégorie HAUT
     public void PlayWinHighSound(int multiplier)
     {
         if (multiplier == 2)
         {
             PlaySound(resultSource, winHighX2Sound);
-            comboText.text = "DADDY'S COMBO";
+            if (comboText != null)
+            {
+                comboText.text = "DADDY'S COMBO";
+            }
+            else
+            {
+                FindComboText();
+                if (comboText != null) comboText.text = "DADDY'S COMBO";
+            }
         }
         else if (multiplier == 4)
         {
             PlaySound(resultSource, winHighX4Sound);
-            comboText.text = "INCREDIBLE COMBO";
+            if (comboText != null)
+            {
+                comboText.text = "INCREDIBLE COMBO";
+            }
+            else
+            {
+                FindComboText();
+                if (comboText != null) comboText.text = "INCREDIBLE COMBO";
+            }
         }
     }
 
-    // Sons pour catégorie ÉCOLOGIE (pertes)
     public void PlayLoseEcoSound(int multiplier)
     {
         if (multiplier == 2)
         {
             PlaySound(resultSource, loseEcoX2Sound);
-            comboText.text = "FIRE COMBO";
+            if (comboText != null)
+            {
+                comboText.text = "FIRE COMBO";
+            }
+            else
+            {
+                FindComboText();
+                if (comboText != null) comboText.text = "FIRE COMBO";
+            }
         }
         else if (multiplier == 4)
         {
             PlaySound(resultSource, loseEcoX4Sound);
-            comboText.text = "DISASTER COMBO";
+            if (comboText != null)
+            {
+                comboText.text = "DISASTER COMBO";
+            }
+            else
+            {
+                FindComboText();
+                if (comboText != null) comboText.text = "DISASTER COMBO";
+            }
         }
     }
 
-    // Son aléatoire quand aucun combo
     public void PlayNoComboSound()
     {
         int randomIndex = Random.Range(0, 3);
@@ -283,22 +429,44 @@ public class SoundManager : MonoBehaviour
         {
             case 0:
                 selectedClip = noCombo1Sound;
-                comboText.text = "DO BETTER";
+                if (comboText != null)
+                {
+                    comboText.text = "DO BETTER";
+                }
+                else
+                {
+                    FindComboText();
+                    if (comboText != null) comboText.text = "DO BETTER";
+                }
                 break;
             case 1:
                 selectedClip = noCombo2Sound;
-                comboText.text = "BORING";
+                if (comboText != null)
+                {
+                    comboText.text = "BORING";
+                }
+                else
+                {
+                    FindComboText();
+                    if (comboText != null) comboText.text = "BORING";
+                }
                 break;
             case 2:
                 selectedClip = noCombo3Sound;
-                comboText.text = "BOUHOUHOU";
+                if (comboText != null)
+                {
+                    comboText.text = "BOUHOUHOU";
+                }
+                else
+                {
+                    FindComboText();
+                    if (comboText != null) comboText.text = "BOUHOUHOU";
+                }
                 break;
         }
 
         PlaySound(resultSource, selectedClip);
     }
-
-    // ==================== UI ====================
 
     public void PlaySpinButton()
     {
@@ -309,8 +477,6 @@ public class SoundManager : MonoBehaviour
     {
         PlaySound(uiSource, buyButtonSound);
     }
-
-    // ==================== FEEDBACK RESSOURCES ====================
 
     public void PlayMoneyGain()
     {
@@ -341,8 +507,6 @@ public class SoundManager : MonoBehaviour
     {
         PlaySound(feedbackSource, criticalBoostSound);
     }
-
-    // ==================== UTILITAIRE ====================
 
     private void PlaySound(AudioSource source, AudioClip clip)
     {
