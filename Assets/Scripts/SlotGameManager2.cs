@@ -122,6 +122,8 @@ public class SlotGameManager2 : MonoBehaviour
 
     public void StartSpin()
     {
+        if (!TutorialManager.Instance.CanPlay())
+            return;
         if (gameEnded) { RestartGame(); }
         if (isSpinning) return;
         if (currentEcology < spinCost)
@@ -262,6 +264,8 @@ public class SlotGameManager2 : MonoBehaviour
 
     public void BuyEcology()
     {
+        if (!TutorialManager.Instance.CanPlay())
+            return;
         if (currentEcology >= 365)
         {
             return;
@@ -289,6 +293,8 @@ public class SlotGameManager2 : MonoBehaviour
 
     public void BuyIndustry()
     {
+        if (!TutorialManager.Instance.CanPlay())
+            return;
         if (currentMoney >= industryCost)
         {
             SoundManager.Instance.PlayBuyButton();

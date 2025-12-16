@@ -39,6 +39,7 @@ public class CameraController : MonoBehaviour
 
         Sign.SetActive(true);
         StartCoroutine(MoveSignUp());
+        TutorialManager.Instance.ShowTutorial();
     }
 
     private IEnumerator MoveSignUp()
