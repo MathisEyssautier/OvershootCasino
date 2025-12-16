@@ -189,6 +189,7 @@ MonoBehaviour:
   Sign: {fileID: 1580887203}
   moveDuration: 1
   targetY: 5
+  backgroundManager: {fileID: 1351236072}
 --- !u!4 &43984521
 Transform:
   m_ObjectHideFlags: 0

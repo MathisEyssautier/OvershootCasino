@@ -103,6 +103,8 @@ public class BackgroundManager : MonoBehaviour
                 _endPositionsTrees[i] = _startPositionsTrees[i].y - maxHeight/8;
             }
         }
+
+        DeactivateBuildings();
     }
     
     void Update()
@@ -141,6 +143,22 @@ public class BackgroundManager : MonoBehaviour
             i++;
             if (i > sunTextures.Length - 1) i = 0;
             yield return new WaitForSeconds(waitTime);
+        }
+    }
+
+    public void ActivateBuildings()
+    {
+        foreach (var building in _buildings)
+        {
+            building.gameObject.SetActive(true);
+        }
+    }
+    
+    public void DeactivateBuildings()
+    {
+        foreach (var building in _buildings)
+        {
+            building.gameObject.SetActive(false);
         }
     }
 }

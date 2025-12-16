@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private GameObject Sign;
     [SerializeField] private float moveDuration = 2f;
     [SerializeField] private float targetY = 5f;
+    [SerializeField] private BackgroundManager backgroundManager;
 
     private void Start()
     {
@@ -40,6 +41,7 @@ public class CameraController : MonoBehaviour
         Sign.SetActive(true);
         StartCoroutine(MoveSignUp());
         TutorialManager.Instance.ShowTutorial();
+        backgroundManager.ActivateBuildings();
     }
 
     private IEnumerator MoveSignUp()
